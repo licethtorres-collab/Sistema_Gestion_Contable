@@ -95,8 +95,8 @@ public class PanelContabilidad extends JPanel {
 
         panelInferior.setLayout(new FlowLayout(FlowLayout.LEFT));
         panelInferior.setBackground(Color.WHITE);
-        
-        tablaContabilidad.setRowHeight(25);
+
+        tablaContabilidad.setRowHeight(20);
         tablaContabilidad.getTableHeader().setReorderingAllowed(false);
         tablaContabilidad.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
@@ -121,8 +121,7 @@ public class PanelContabilidad extends JPanel {
         panelCabecera.add(etiquetaTitulo, BorderLayout.NORTH);
         panelCabecera.add(panelBotones, BorderLayout.CENTER);
         panelCabecera.add(panelFiltros, BorderLayout.SOUTH);
-        
-        //Colores Botones
+
         botonNuevoMovimiento.setBackground(Color.WHITE);
         botonVerDetalle.setBackground(Color.WHITE);
         botonFiltrar.setBackground(Color.WHITE);

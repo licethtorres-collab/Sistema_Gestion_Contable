@@ -1,24 +1,34 @@
 package co.uptc.edu.co.gui;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 public class DialogProducto extends JDialog {
+
 	private JTextField campoCodigo;
 	private JTextField campoNombre;
 	private JComboBox<String> comboCategoria;
-	private JTextField campoPrecioVenta;
 	private JTextField campoPrecioCompra;
-	private JTextField campoStock;
+	private JTextField campoPrecioVenta;
+	private JTextField campoStockActual;
+	private JTextField campoStockMinimo;
 
-	private JButton botonOK;
+	private JButton botonGuardar;
 	private JButton botonCancelar;
 
-	public DialogProducto(Frame Propietario) {
-		this(Propietario, null);
-
+	public DialogProducto(Frame propietario) {
+		this(propietario, null);
 	}
 
 	public DialogProducto(Frame propietario, Evento evento) {
@@ -32,21 +42,29 @@ public class DialogProducto extends JDialog {
 	private void inicializarComponentes() {
 		campoCodigo = new JTextField(25);
 		campoNombre = new JTextField(25);
-		comboCategoria = new JComboBox<>();
+
+		comboCategoria = new JComboBox<String>();
 		comboCategoria.addItem("Aseo");
 		comboCategoria.addItem("Alimentos");
 		comboCategoria.addItem("Bebidas");
+		comboCategoria.addItem("Papelería");
 
-		campoPrecioVenta = new JTextField(25);
 		campoPrecioCompra = new JTextField(25);
-		campoStock = new JTextField(25);
+		campoPrecioVenta = new JTextField(25);
+		campoStockActual = new JTextField(25);
+		campoStockMinimo = new JTextField(25);
 
-		botonOK = new JButton("OK");
+		botonGuardar = new JButton("Guardar");
 		botonCancelar = new JButton("Cancelar");
+
+		botonGuardar.setBackground(new Color(46, 125, 50));
+		botonGuardar.setForeground(Color.WHITE);
+
+		botonCancelar.setBackground(new Color(220, 220, 220));
 	}
 
 	private void configurarDialogo() {
-		setSize(340, 410);
+		setSize(340, 470);
 		setLocationRelativeTo(getOwner());
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
@@ -63,7 +81,9 @@ public class DialogProducto extends JDialog {
 		gbc.gridwidth = 2;
 		gbc.anchor = GridBagConstraints.WEST;
 		gbc.insets = new Insets(0, 0, 5, 0);
-		panelPrincipal.add(new JLabel("Codigo:"), gbc);
+
+		panelPrincipal.add(new JLabel("Código interno:"), gbc);
+
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		panelPrincipal.add(campoCodigo, gbc);
@@ -71,7 +91,7 @@ public class DialogProducto extends JDialog {
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.insets = new Insets(8, 0, 5, 0);
-		panelPrincipal.add(new JLabel("Nombre:"), gbc);
+		panelPrincipal.add(new JLabel("Nombre del producto:"), gbc);
 
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -81,22 +101,12 @@ public class DialogProducto extends JDialog {
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.insets = new Insets(8, 0, 5, 0);
-		panelPrincipal.add(new JLabel("Categoria:"), gbc);
+		panelPrincipal.add(new JLabel("Categoría:"), gbc);
 
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 0, 5, 0);
 		panelPrincipal.add(comboCategoria, gbc);
-
-		gbc.gridy++;
-		gbc.fill = GridBagConstraints.NONE;
-		gbc.insets = new Insets(8, 0, 5, 0);
-		panelPrincipal.add(new JLabel("Precio de Venta:"), gbc);
-
-		gbc.gridy++;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(0, 0, 5, 0);
-		panelPrincipal.add(campoPrecioVenta, gbc);
 
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.NONE;
@@ -111,15 +121,36 @@ public class DialogProducto extends JDialog {
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.NONE;
 		gbc.insets = new Insets(8, 0, 5, 0);
-		panelPrincipal.add(new JLabel("Stock:"), gbc);
+		panelPrincipal.add(new JLabel("Precio de venta:"), gbc);
+
+		gbc.gridy++;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = new Insets(0, 0, 5, 0);
+		panelPrincipal.add(campoPrecioVenta, gbc);
+
+		gbc.gridy++;
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.insets = new Insets(8, 0, 5, 0);
+		panelPrincipal.add(new JLabel("Stock actual:"), gbc);
+
+		gbc.gridy++;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = new Insets(0, 0, 5, 0);
+		panelPrincipal.add(campoStockActual, gbc);
+
+		gbc.gridy++;
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.insets = new Insets(8, 0, 5, 0);
+		panelPrincipal.add(new JLabel("Stock mínimo:"), gbc);
 
 		gbc.gridy++;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(0, 0, 10, 0);
-		panelPrincipal.add(campoStock, gbc);
+		panelPrincipal.add(campoStockMinimo, gbc);
 
-		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-		panelBotones.add(botonOK);
+		JPanel panelBotones = new JPanel();
+		panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+		panelBotones.add(botonGuardar);
 		panelBotones.add(botonCancelar);
 
 		gbc.gridy++;
@@ -133,11 +164,12 @@ public class DialogProducto extends JDialog {
 
 	private void inicializarEventos(Evento evento) {
 		botonCancelar.addActionListener(e -> dispose());
+
 		if (evento != null) {
-			botonOK.setActionCommand(Evento.CMD_CONFIRMAR_PRODUCTO);
-			botonOK.addActionListener(evento);
+			botonGuardar.setActionCommand(Evento.CMD_CONFIRMAR_PRODUCTO);
+			botonGuardar.addActionListener(evento);
 		} else {
-			botonOK.addActionListener(e -> dispose());
+			botonGuardar.addActionListener(e -> dispose());
 		}
 	}
 }

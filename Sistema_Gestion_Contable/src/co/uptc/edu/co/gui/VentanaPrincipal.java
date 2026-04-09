@@ -4,132 +4,145 @@ import javax.swing.*;
 import java.awt.*;
 
 public class VentanaPrincipal extends JFrame {
-	// Hola mundo
-	private JPanel panelEncabezado;
-	private JPanel panelContenido;
 
-	private JButton botonProductos;
-	private JButton botonClientes;
-	private JButton botonProveedores;
-	private JButton botonVentas;
-	private JButton botonCompras;
-	private JButton botonContabilidad;
-	private JButton botonReportes;
-	private JButton botonConsultas;
+    private JPanel panelEncabezado;
+    private JPanel panelContenido;
 
-	public VentanaPrincipal() {
-		inicializarComponentes();
-		configurarVentana();
-		agregarComponentes();
-		inicializarEventos();
-		mostrarPanel(new PanelInicio());
-	}
+    private JButton botonProductos;
+    private JButton botonClientes;
+    private JButton botonProveedores;
+    private JButton botonVentas;
+    private JButton botonCompras;
+    private JButton botonContabilidad;
+    private JButton botonReportes;
+    private JButton botonConsultas;
 
-	private void inicializarComponentes() {
+    private Evento evento;
 
-		panelEncabezado = new JPanel();
-		panelContenido = new JPanel();
+    public VentanaPrincipal() {
+        inicializarComponentes();
+        configurarVentana();
+        agregarComponentes();
+        inicializarEventos();
+        mostrarPanel(new PanelInicio());
+    }
 
-		botonProductos = new JButton("Productos");
-		botonClientes = new JButton("Clientes");
-		botonProveedores = new JButton("Proveedores");
-		botonVentas = new JButton("Ventas");
-		botonCompras = new JButton("Compras");
-		botonContabilidad = new JButton("Contabilidad");
-		botonReportes = new JButton("Reportes");
-		botonConsultas = new JButton("Consultas del Sistema");
-	}
+    private void inicializarComponentes() {
+        panelEncabezado = new JPanel();
+        panelContenido = new JPanel();
 
-	private void configurarVentana() {
+        botonProductos = new JButton("Productos");
+        botonClientes = new JButton("Clientes");
+        botonProveedores = new JButton("Proveedores");
+        botonVentas = new JButton("Ventas");
+        botonCompras = new JButton("Compras");
+        botonContabilidad = new JButton("Contabilidad");
+        botonReportes = new JButton("Reportes");
+        botonConsultas = new JButton("Consultas del Sistema");
+    }
 
-		setTitle("Sistema de Gestion Contable Y Comercial");
-		setSize(1200, 700);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
-	}
+    private void configurarVentana() {
+        setTitle("Sistema de Gestion Contable y Comercial");
+        setSize(1200, 700);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+    }
 
-	private void agregarComponentes() {
+    private void agregarComponentes() {
+        panelEncabezado.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        panelEncabezado.setBackground(new Color(20, 45, 75));
 
-		panelEncabezado.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
-		panelEncabezado.setBackground(new Color(20, 45, 75));
+        JButton[] botones = {
+            botonProductos, botonClientes, botonProveedores,
+            botonVentas, botonCompras, botonContabilidad,
+            botonReportes, botonConsultas
+        };
 
-		// Color de letra botones
-		botonProductos.setForeground(Color.WHITE);
-		botonClientes.setForeground(Color.WHITE);
-		botonProveedores.setForeground(Color.WHITE);
-		botonVentas.setForeground(Color.WHITE);
-		botonCompras.setForeground(Color.WHITE);
-		botonContabilidad.setForeground(Color.WHITE);
-		botonReportes.setForeground(Color.WHITE);
-		botonConsultas.setForeground(Color.WHITE);
+        for (JButton boton : botones) {
+            boton.setForeground(Color.WHITE);
+            boton.setBackground(new Color(30, 60, 100));
+            panelEncabezado.add(boton);
+        }
 
-		// Color del relleno del boton
-		botonProductos.setBackground(new Color(30, 60, 100));
-		botonClientes.setBackground(new Color(30, 60, 100));
-		botonProveedores.setBackground(new Color(30, 60, 100));
-		botonVentas.setBackground(new Color(30, 60, 100));
-		botonCompras.setBackground(new Color(30, 60, 100));
-		botonContabilidad.setBackground(new Color(30, 60, 100));
-		botonReportes.setBackground(new Color(30, 60, 100));
-		botonConsultas.setBackground(new Color(30, 60, 100));
+        panelContenido.setBackground(Color.WHITE);
+        panelContenido.setLayout(new BorderLayout());
 
-		// Agregar botones al panel
-		panelEncabezado.add(botonProductos);
-		panelEncabezado.add(botonClientes);
-		panelEncabezado.add(botonProveedores);
-		panelEncabezado.add(botonVentas);
-		panelEncabezado.add(botonCompras);
-		panelEncabezado.add(botonContabilidad);
-		panelEncabezado.add(botonReportes);
-		panelEncabezado.add(botonConsultas);
+        add(panelEncabezado, BorderLayout.NORTH);
+        add(panelContenido, BorderLayout.CENTER);
+    }
 
-		panelContenido.setBackground(Color.WHITE);
-		panelContenido.setLayout(new BorderLayout());
+    private void inicializarEventos() {
+        evento = new Evento(this);
 
-		add(panelEncabezado, BorderLayout.NORTH);
-		add(panelContenido, BorderLayout.CENTER);
-	}
+        botonProductos.setActionCommand(Evento.PRODUCTOS);
+        botonProductos.addActionListener(evento);
 
-	private void inicializarEventos() {
+        botonClientes.setActionCommand(Evento.CLIENTES);
+        botonClientes.addActionListener(evento);
 
-		Evento evento = new Evento(this);
+        botonProveedores.setActionCommand(Evento.PROVEEDORES);
+        botonProveedores.addActionListener(evento);
 
-		botonProductos.setActionCommand("Productos");
-		botonProductos.addActionListener(evento);
+        botonVentas.setActionCommand(Evento.VENTAS);
+        botonVentas.addActionListener(evento);
 
-		botonClientes.setActionCommand("Clientes");
-		botonClientes.addActionListener(evento);
+        botonCompras.setActionCommand(Evento.COMPRAS);
+        botonCompras.addActionListener(evento);
 
-		botonProveedores.setActionCommand("Proveedores");
-		botonProveedores.addActionListener(evento);
+        botonContabilidad.setActionCommand(Evento.CONTABILIDAD);
+        botonContabilidad.addActionListener(evento);
 
-		botonVentas.setActionCommand("Ventas");
-		botonVentas.addActionListener(evento);
+        botonReportes.setActionCommand(Evento.REPORTES);
+        botonReportes.addActionListener(evento);
 
-		botonCompras.setActionCommand("Compras");
-		botonCompras.addActionListener(evento);
+        botonConsultas.setActionCommand(Evento.CONSULTAS);
+        botonConsultas.addActionListener(evento);
+    }
 
-		botonContabilidad.setActionCommand("Contabilidad");
-		botonContabilidad.addActionListener(evento);
+    public void mostrarPanel(JPanel panel) {
+        panelContenido.removeAll();
+        panelContenido.add(panel, BorderLayout.CENTER);
+        panelContenido.revalidate();
+        panelContenido.repaint();
+    }
 
-		botonReportes.setActionCommand("Reportes");
-		botonReportes.addActionListener(evento);
+    public void irProductos() {
+        PanelProducto panel = new PanelProducto();
+        panel.inicializarEventos(evento);
+        mostrarPanel(panel);
+    }
 
-		botonConsultas.setActionCommand("Consultas");
-		botonConsultas.addActionListener(evento);
-	}
+    public void irClientes() {
+        mostrarPanel(new PanelCliente());
+    }
 
-	// metodo cambio de pantalla
-	public void mostrarPanel(JPanel panel) {
-		panelContenido.removeAll();
-		panelContenido.add(panel, BorderLayout.CENTER);
-		panelContenido.revalidate();
-		panelContenido.repaint();
-	}
+    public void irProveedores() {
+        mostrarPanel(new PanelProveedor());
+    }
 
-	public static void main(String[] args) {
-		VentanaPrincipal ventana = new VentanaPrincipal();
-		ventana.setVisible(true);
-	}
+    public void irVentas() {
+        mostrarPanel(new PanelVenta());
+    }
+
+    public void irCompras() {
+        mostrarPanel(new PanelCompra());
+    }
+
+    public void irContabilidad() {
+        mostrarPanel(new PanelContabilidad());
+    }
+
+    public void irReportes() {
+        mostrarPanel(new PanelReportes());
+    }
+
+    public void irConsultas() {
+        mostrarPanel(new PanelConsultas());
+    }
+
+    public static void main(String[] args) {
+        VentanaPrincipal ventana = new VentanaPrincipal();
+        ventana.setVisible(true);
+    }
 }

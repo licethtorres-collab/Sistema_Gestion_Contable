@@ -1,5 +1,6 @@
 package co.uptc.edu.co.gui;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -14,11 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class DialogActualizarPrecio extends JDialog {
-	private JTextField campoCodigo;
+
+    private JTextField campoCodigo;
     private JTextField campoPrecioCompra;
     private JTextField campoPrecioVenta;
 
-    private JButton botonOk;
+    private JButton botonActualizar;
     private JButton botonCancelar;
 
     public DialogActualizarPrecio(Frame propietario) {
@@ -38,8 +40,13 @@ public class DialogActualizarPrecio extends JDialog {
         campoPrecioCompra = new JTextField(25);
         campoPrecioVenta = new JTextField(25);
 
-        botonOk = new JButton("OK");
-        botonCancelar = new JButton("Cancel");
+        botonActualizar = new JButton("Actualizar");
+        botonCancelar = new JButton("Cancelar");
+
+        botonActualizar.setBackground(new Color(33, 150, 243));
+        botonActualizar.setForeground(Color.WHITE);
+
+        botonCancelar.setBackground(new Color(220, 220, 220));
     }
 
     private void configurarDialogo() {
@@ -60,7 +67,8 @@ public class DialogActualizarPrecio extends JDialog {
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 0, 5, 0);
-        panelPrincipal.add(new JLabel("Codigo de producto:"), gbc);
+
+        panelPrincipal.add(new JLabel("Código del producto:"), gbc);
 
         gbc.gridy++;
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -86,8 +94,9 @@ public class DialogActualizarPrecio extends JDialog {
         gbc.insets = new Insets(0, 0, 10, 0);
         panelPrincipal.add(campoPrecioVenta, gbc);
 
-        JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-        panelBotones.add(botonOk);
+        JPanel panelBotones = new JPanel();
+        panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        panelBotones.add(botonActualizar);
         panelBotones.add(botonCancelar);
 
         gbc.gridy++;
@@ -101,11 +110,12 @@ public class DialogActualizarPrecio extends JDialog {
 
     private void inicializarEventos(Evento evento) {
         botonCancelar.addActionListener(e -> dispose());
+
         if (evento != null) {
-            botonOk.setActionCommand(Evento.CMD_CONFIRMAR_ACTUALIZAR_PRECIO_PRODUCTO);
-            botonOk.addActionListener(evento);
+            botonActualizar.setActionCommand(Evento.CMD_CONFIRMAR_ACTUALIZACION_PRECIO_PRODUCTO);
+            botonActualizar.addActionListener(evento);
         } else {
-            botonOk.addActionListener(e -> dispose());
+            botonActualizar.addActionListener(e -> dispose());
         }
     }
 }

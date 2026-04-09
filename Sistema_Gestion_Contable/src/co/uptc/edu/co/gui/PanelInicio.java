@@ -46,23 +46,23 @@ public class PanelInicio extends JPanel {
     }
 
     private void agregarComponentes() {
-        GridBagConstraints gbcPanel = new GridBagConstraints();
-        gbcPanel.gridx = 0;
-        gbcPanel.gridy = 0;
-        add(panelCentral, gbcPanel);
+    	GridBagConstraints posicionPanel = new GridBagConstraints();
+    	posicionPanel.gridx = 0;
+    	posicionPanel.gridy = 0;
+    	add(panelCentral, posicionPanel);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.insets = new Insets(10, 10, 10, 10);
+    	GridBagConstraints posicionTexto = new GridBagConstraints();
+    	posicionTexto.gridx = 0;
+    	posicionTexto.insets = new Insets(10, 10, 10, 10);
 
-        gbc.gridy = 0;
-        panelCentral.add(etiquetaTitulo, gbc);
+    	posicionTexto.gridy = 0;
+    	panelCentral.add(etiquetaTitulo, posicionTexto);
 
-        gbc.gridy = 1;
-        panelCentral.add(etiquetaBienvenida, gbc);
+    	posicionTexto.gridy = 1;
+    	panelCentral.add(etiquetaBienvenida, posicionTexto);
 
-        gbc.gridy = 2;
-        panelCentral.add(etiquetaInstruccion, gbc);
+    	posicionTexto.gridy = 2;
+    	panelCentral.add(etiquetaInstruccion, posicionTexto);
 
        
     }
