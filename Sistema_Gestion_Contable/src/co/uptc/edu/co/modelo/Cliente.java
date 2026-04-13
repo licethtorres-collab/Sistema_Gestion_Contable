@@ -11,6 +11,10 @@ public class Cliente {
     private String tipoCliente;
     private String estado;
 
+    public Cliente() {
+
+    }
+
     public Cliente(String codigo, String nombre, String tipoIdentificacion,
                    String numeroIdentificacion, String direccion, String telefono,
                    String tipoCliente, String estado) {
@@ -89,8 +93,12 @@ public class Cliente {
         this.estado = estado;
     }
 
+    public boolean estaActivo() {
+        return "Activo".equalsIgnoreCase(estado);
+    }
+
     @Override
     public String toString() {
-        return nombre;
+        return codigo + " - " + nombre;
     }
 }

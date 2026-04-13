@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class DialogInactivarProducto extends JDialog {
+public class DialogEstadoProducto extends JDialog {
 
     private JTextField campoCodigo;
     private JTextField campoMotivo;
@@ -22,11 +22,11 @@ public class DialogInactivarProducto extends JDialog {
     private JButton botonInactivar;
     private JButton botonCancelar;
 
-    public DialogInactivarProducto(Frame propietario) {
+    public DialogEstadoProducto(Frame propietario) {
         this(propietario, null);
     }
 
-    public DialogInactivarProducto(Frame propietario, Evento evento) {
+    public DialogEstadoProducto(Frame propietario, Evento evento) {
         super(propietario, "Inactivar Producto", true);
         inicializarComponentes();
         configurarDialogo();

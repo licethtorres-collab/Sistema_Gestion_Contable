@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import co.uptc.edu.co.modelo.Producto;
+
 public class DialogActualizarPrecio extends JDialog {
 
     private JTextField campoCodigo;
@@ -116,6 +118,63 @@ public class DialogActualizarPrecio extends JDialog {
             botonActualizar.addActionListener(evento);
         } else {
             botonActualizar.addActionListener(e -> dispose());
+        }
+    }
+
+    public void cargarProducto(Producto producto) {
+        campoCodigo.setText(producto.getCodigo());
+        campoCodigo.setEditable(false);
+        campoPrecioCompra.setText(String.valueOf(producto.getPrecioCompra()));
+        campoPrecioVenta.setText(String.valueOf(producto.getPrecioVenta()));
+    }
+
+    public String obtenerCodigoProducto() throws Exception {
+        String codigo = campoCodigo.getText().trim();
+
+        if (codigo.isEmpty()) {
+            throw new Exception("El código del producto es obligatorio.");
+        }
+
+        return codigo;
+    }
+
+    public double obtenerNuevoPrecioCompra() throws Exception {
+        String textoPrecioCompra = campoPrecioCompra.getText().trim();
+
+        if (textoPrecioCompra.isEmpty()) {
+            throw new Exception("El precio de compra es obligatorio.");
+        }
+
+        try {
+            double precioCompra = Double.parseDouble(textoPrecioCompra);
+
+            if (precioCompra < 0) {
+                throw new Exception("El precio de compra no puede ser negativo.");
+            }
+
+            return precioCompra;
+        } catch (NumberFormatException e) {
+            throw new Exception("El precio de compra debe ser numérico.");
+        }
+    }
+
+    public double obtenerNuevoPrecioVenta() throws Exception {
+        String textoPrecioVenta = campoPrecioVenta.getText().trim();
+
+        if (textoPrecioVenta.isEmpty()) {
+            throw new Exception("El precio de venta es obligatorio.");
+        }
+
+        try {
+            double precioVenta = Double.parseDouble(textoPrecioVenta);
+
+            if (precioVenta < 0) {
+                throw new Exception("El precio de venta no puede ser negativo.");
+            }
+
+            return precioVenta;
+        } catch (NumberFormatException e) {
+            throw new Exception("El precio de venta debe ser numérico.");
         }
     }
 }
