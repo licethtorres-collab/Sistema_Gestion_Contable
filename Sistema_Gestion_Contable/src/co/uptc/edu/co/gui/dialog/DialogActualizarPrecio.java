@@ -1,4 +1,4 @@
-package co.uptc.edu.co.gui;
+package co.uptc.edu.co.gui.dialog;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import co.uptc.edu.co.gui.Evento;
 import co.uptc.edu.co.modelo.Producto;
 
 public class DialogActualizarPrecio extends JDialog {

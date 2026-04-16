@@ -10,6 +10,10 @@ import javax.swing.SwingUtilities;
 
 import co.uptc.edu.co.modelo.Producto;
 import co.uptc.edu.co.negocio.GestionProducto;
+import co.uptc.edu.co.gui.dialog.DialogActualizarPrecio;
+import co.uptc.edu.co.gui.dialog.DialogEditarProducto;
+import co.uptc.edu.co.gui.dialog.DialogMovimientoInventario;
+import co.uptc.edu.co.gui.dialog.DialogProducto;
 import co.uptc.edu.co.modelo.Cliente;
 import co.uptc.edu.co.negocio.GestionCliente;
 

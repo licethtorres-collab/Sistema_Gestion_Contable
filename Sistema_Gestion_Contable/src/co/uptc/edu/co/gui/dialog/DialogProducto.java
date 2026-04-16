@@ -1,4 +1,4 @@
-package co.uptc.edu.co.gui;
+package co.uptc.edu.co.gui.dialog;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import co.uptc.edu.co.gui.Evento;
 import co.uptc.edu.co.modelo.Producto;
 
 import java.awt.Color;

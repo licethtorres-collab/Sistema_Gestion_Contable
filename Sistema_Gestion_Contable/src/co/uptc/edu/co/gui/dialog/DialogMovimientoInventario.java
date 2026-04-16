@@ -1,4 +1,4 @@
-package co.uptc.edu.co.gui;
+package co.uptc.edu.co.gui.dialog;
 
 import javax.swing.JDialog;
 
@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import co.uptc.edu.co.gui.Evento;
 
 public class DialogMovimientoInventario extends JDialog {
 

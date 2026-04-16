@@ -1,4 +1,4 @@
-package co.uptc.edu.co.gui;
+package co.uptc.edu.co.gui.dialog;
 
 public class DialogHistorialCliente {
 
