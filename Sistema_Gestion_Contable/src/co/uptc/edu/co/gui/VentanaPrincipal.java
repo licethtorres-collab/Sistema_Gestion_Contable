@@ -3,7 +3,7 @@ package co.uptc.edu.co.gui;
 import javax.swing.*;
 import java.awt.*;
 
-public class VentanaPrincipal extends JFrame {
+public class VentanaPrincipal extends JFrame { // cambio
 
     private JPanel panelEncabezado;
     private JPanel panelContenido;
