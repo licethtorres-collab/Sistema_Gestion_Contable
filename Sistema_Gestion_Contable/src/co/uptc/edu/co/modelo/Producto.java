@@ -15,11 +15,11 @@ public class Producto {
     public Producto() {
     }
 
-    public Producto(String codigo, String nombreProducto, String categoria,
+    public Producto(String codigoProducto, String nombreProducto, String categoria,
             double precioCompra, double precioVenta,
             int stockActual, int stockMinimo, int stockMaximo, String estado) {
 
-        this.codigoProducto = codigo;
+        this.codigoProducto = codigoProducto;
         this.nombreProducto = nombreProducto;
         this.categoria = categoria;
         this.precioCompra = precioCompra;
@@ -30,12 +30,12 @@ public class Producto {
         this.estado = estado;
     }
 
-    public String getCodigo() {
+    public String getCodigoProducto() {
         return codigoProducto;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigoProducto = codigo;
+    public void setCodigoProducto(String codigoProducto) {
+        this.codigoProducto = codigoProducto;
     }
 
     public String getNombreProducto() {

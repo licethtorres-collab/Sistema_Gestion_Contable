@@ -202,7 +202,7 @@ public class PanelProducto extends JPanel {
 
         for (Producto producto : productosCargados) {
             boolean coincideBusqueda =
-                    producto.getCodigo().toLowerCase().contains(textoBusqueda) ||
+                    producto.getCodigoProducto().toLowerCase().contains(textoBusqueda) ||
                     producto.getNombreProducto().toLowerCase().contains(textoBusqueda);
 
             boolean coincideCategoria =
@@ -211,7 +211,7 @@ public class PanelProducto extends JPanel {
 
             if (coincideBusqueda && coincideCategoria) {
                 Object[] fila = {
-                        producto.getCodigo(),
+                        producto.getCodigoProducto(),
                         producto.getNombreProducto(),
                         producto.getCategoria(),
                         producto.getPrecioCompra(),

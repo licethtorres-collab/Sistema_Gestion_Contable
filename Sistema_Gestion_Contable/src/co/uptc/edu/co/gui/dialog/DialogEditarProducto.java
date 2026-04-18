@@ -190,7 +190,7 @@ public class DialogEditarProducto extends JDialog {
     }
 
     public void cargarProducto(Producto producto) {
-        campoCodigo.setText(producto.getCodigo());
+        campoCodigo.setText(producto.getCodigoProducto());
         campoCodigo.setEditable(false);
 
         campoNombre.setText(producto.getNombreProducto());

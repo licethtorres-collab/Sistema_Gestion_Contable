@@ -123,7 +123,7 @@ public class DialogActualizarPrecio extends JDialog {
     }
 
     public void cargarProducto(Producto producto) {
-        campoCodigo.setText(producto.getCodigo());
+        campoCodigo.setText(producto.getCodigoProducto());
         campoCodigo.setEditable(false);
         campoPrecioCompra.setText(String.valueOf(producto.getPrecioCompra()));
         campoPrecioVenta.setText(String.valueOf(producto.getPrecioVenta()));

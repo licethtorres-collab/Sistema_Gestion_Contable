@@ -15,6 +15,7 @@ public class PanelCliente extends JPanel {
 
     private JLabel etiquetaTitulo;
     private JLabel etiquetaTotal;
+    
 
     private JButton botonNuevo;
     private JButton botonEditar;

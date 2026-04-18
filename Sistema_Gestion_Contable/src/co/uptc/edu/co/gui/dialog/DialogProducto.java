@@ -340,7 +340,7 @@ public class DialogProducto extends JDialog {
     }
 
     public void cargarProducto(Producto producto) {
-        campoCodigo.setText(producto.getCodigo());
+        campoCodigo.setText(producto.getCodigoProducto());
         campoNombre.setText(producto.getNombreProducto());
         comboCategoria.setSelectedItem(producto.getCategoria());
         campoPrecioVenta.setText(String.valueOf(producto.getPrecioVenta()));

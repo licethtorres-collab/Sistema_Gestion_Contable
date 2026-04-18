@@ -4,10 +4,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.uptc.edu.co.interfaces.IGestionProducto;
 import co.uptc.edu.co.modelo.MovimientoInventario;
 import co.uptc.edu.co.modelo.Producto;
 
-public class GestionProducto {
+public class GestionProducto implements IGestionProducto {
 
     public static final String ACTIVO = "Activo";
     public static final String INACTIVO = "Inactivo";
@@ -20,31 +21,31 @@ public class GestionProducto {
         movimientos = new ArrayList<>();
     }
 
-    // Buscar producto por código
+    @Override
     public Producto buscarProductoPorCodigo(String codigo) {
         for (Producto producto : productos) {
-            if (producto.getCodigo().equalsIgnoreCase(codigo)) {
+            if (producto.getCodigoProducto().equalsIgnoreCase(codigo)) {
                 return producto;
             }
         }
         return null;
     }
 
-    // Obtener lista de productos
+    @Override
     public List<Producto> obtenerProductos() {
         return new ArrayList<>(productos);
     }
 
-    // Obtener lista de movimientos
+    @Override
     public List<MovimientoInventario> obtenerMovimientos() {
         return new ArrayList<>(movimientos);
     }
 
-    // Registrar producto
+    @Override
     public void registrarProducto(Producto producto) throws Exception {
         validarProducto(producto);
 
-        if (buscarProductoPorCodigo(producto.getCodigo()) != null) {
+        if (buscarProductoPorCodigo(producto.getCodigoProducto()) != null) {
             throw new Exception("Ya existe un producto con ese código.");
         }
 
@@ -52,11 +53,11 @@ public class GestionProducto {
         productos.add(producto);
     }
 
-    // Actualizar producto
+    @Override
     public void actualizarProducto(Producto productoActualizado) throws Exception {
         validarProducto(productoActualizado);
 
-        Producto productoExistente = buscarProductoPorCodigo(productoActualizado.getCodigo());
+        Producto productoExistente = buscarProductoPorCodigo(productoActualizado.getCodigoProducto());
 
         if (productoExistente == null) {
             throw new Exception("No se encontró el producto a actualizar.");
@@ -71,7 +72,7 @@ public class GestionProducto {
         productoExistente.setStockMaximo(productoActualizado.getStockMaximo());
     }
 
-    // Cambiar estado del producto
+    @Override
     public void cambiarEstadoProducto(String codigo) throws Exception {
         Producto producto = buscarProductoPorCodigo(codigo);
 
@@ -86,13 +87,12 @@ public class GestionProducto {
         }
     }
 
-    // Validar producto
     private void validarProducto(Producto producto) throws Exception {
         if (producto == null) {
             throw new Exception("El producto no puede ser nulo.");
         }
 
-        if (producto.getCodigo() == null || producto.getCodigo().trim().isEmpty()) {
+        if (producto.getCodigoProducto() == null || producto.getCodigoProducto().trim().isEmpty()) {
             throw new Exception("El código del producto es obligatorio.");
         }
 
@@ -104,7 +104,7 @@ public class GestionProducto {
             throw new Exception("La categoría es obligatoria.");
         }
 
-        if (!producto.getCodigo().matches("[A-Z0-9]{3,10}")) {
+        if (!producto.getCodigoProducto().matches("[A-Z0-9]{3,10}")) {
             throw new Exception("El código debe ser alfanumérico, en mayúsculas, y tener entre 3 y 10 caracteres.");
         }
 
@@ -145,7 +145,7 @@ public class GestionProducto {
         }
     }
 
-    // Actualizar precio del producto
+    @Override
     public void actualizarPrecioProducto(String codigo, Double nuevoPrecioCompra, Double nuevoPrecioVenta) throws Exception {
         Producto producto = buscarProductoPorCodigo(codigo);
 
@@ -176,7 +176,7 @@ public class GestionProducto {
         }
     }
 
-    // Registrar movimiento de inventario
+    @Override
     public void registrarMovimientoInventario(String codigo, String tipoMovimiento, int cantidad) throws Exception {
         Producto producto = buscarProductoPorCodigo(codigo);
 

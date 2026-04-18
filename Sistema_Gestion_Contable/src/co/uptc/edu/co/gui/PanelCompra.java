@@ -8,6 +8,7 @@ public class PanelCompra extends JPanel {
 
     private JLabel etiquetaTitulo;
     private JLabel etiquetaTotal;
+    
 
     private JButton botonNuevaCompra;
     private JButton botonEditar;

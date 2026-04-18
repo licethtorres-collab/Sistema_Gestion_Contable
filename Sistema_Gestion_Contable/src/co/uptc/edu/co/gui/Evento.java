@@ -372,7 +372,7 @@ public class Evento implements ActionListener {
             }
 
             DialogMovimientoInventario dialog = new DialogMovimientoInventario(ventana, this);
-            dialog.cargarProducto(producto.getCodigo());
+            dialog.cargarProducto(producto.getCodigoProducto());
             dialog.setVisible(true);
 
         } catch (Exception ex) {
