@@ -1,15 +1,63 @@
 package co.uptc.edu.co.gui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import javax.swing.text.MaskFormatter;
 import java.text.ParseException;
 
-public class PanelReportes extends JPanel {
+public class PanelReportes extends PanelCentral {
 
-    private JLabel etiquetaTitulo;
-    private JLabel etiquetaTotal;
+    private static final String TITULO_PANEL = "Gestión de Reportes";
+    private static final String TEXTO_TOTAL_INICIAL = "Registros del reporte: 0";
+    private static final String TEXTO_TOTAL = "Registros del reporte: ";
+
+    private static final String TEXTO_LABEL_TIPO_REPORTE = "Tipo de reporte:";
+    private static final String TEXTO_LABEL_FECHA = "Fecha:";
+    private static final String TEXTO_LABEL_MES = "Mes:";
+    private static final String TEXTO_LABEL_ANIO = "Año:";
+    private static final String TEXTO_LABEL_FECHA_INICIO = "Desde:";
+    private static final String TEXTO_LABEL_FECHA_FIN = "Hasta:";
+
+    private static final String TEXTO_BOTON_GENERAR = "Generar";
+
+    private static final String REPORTE_VENTAS_DIARIAS = "Ventas diarias";
+    private static final String REPORTE_VENTAS_MENSUALES = "Ventas mensuales";
+    private static final String REPORTE_VENTAS_ANUALES = "Ventas anuales";
+    private static final String REPORTE_UTILIDAD_BRUTA = "Utilidad bruta";
+    private static final String REPORTE_PRODUCTOS_MAS_VENDIDOS = "Productos más vendidos";
+    private static final String REPORTE_CLIENTES_MAYOR_COMPRA = "Clientes con mayor volumen de compra";
+    private static final String REPORTE_VENTAS_FORMA_PAGO = "Comparación de ventas por forma de pago";
+    private static final String REPORTE_INVENTARIO_VALORIZADO = "Estado de inventario valorizado";
+    private static final String REPORTE_RESUMEN_CONTABLE = "Resumen contable por periodo";
+
+    private static final String[] COLUMNAS_INICIALES = { "Resultado" };
+    private static final String[] COLUMNAS_VENTAS_DIARIAS = {
+            "Fecha", "Total Ventas"
+    };
+    private static final String[] COLUMNAS_VENTAS_MENSUALES = {
+            "Mes", "Año", "Total Ventas"
+    };
+    private static final String[] COLUMNAS_VENTAS_ANUALES = {
+            "Año", "Total Ventas"
+    };
+    private static final String[] COLUMNAS_UTILIDAD_BRUTA = {
+            "Total Ventas", "Costo de Ventas", "Utilidad Bruta"
+    };
+    private static final String[] COLUMNAS_PRODUCTOS_MAS_VENDIDOS = {
+            "Código", "Producto", "Cantidad Vendida"
+    };
+    private static final String[] COLUMNAS_CLIENTES_MAYOR_COMPRA = {
+            "Cliente", "Total Comprado"
+    };
+    private static final String[] COLUMNAS_VENTAS_FORMA_PAGO = {
+            "Forma de Pago", "Valor"
+    };
+    private static final String[] COLUMNAS_INVENTARIO_VALORIZADO = {
+            "Código", "Producto", "Stock", "Costo Unitario", "Valor Total"
+    };
+    private static final String[] COLUMNAS_RESUMEN_CONTABLE = {
+            "Ingresos", "Egresos", "Utilidad"
+    };
 
     private JLabel etiquetaTipoReporte;
     private JLabel etiquetaFecha;
@@ -28,43 +76,49 @@ public class PanelReportes extends JPanel {
     private JFormattedTextField campoFechaInicio;
     private JFormattedTextField campoFechaFin;
 
-    private JTable tablaReportes;
-    private DefaultTableModel modeloTabla;
-
-    private JPanel panelSuperior;
-    private JPanel panelFiltros;
-    private JPanel panelInferior;
-
     public PanelReportes() {
-        inicializarComponentes();
-        configurarPanel();
-        agregarComponentes();
+        super();
+        inicializarComponentesReportes();
+        configurarPanelReportes();
+        agregarComponentesReportes();
         actualizarFiltros();
     }
 
-    private void inicializarComponentes() {
-        etiquetaTitulo = new JLabel("Gestión de Reportes");
-        etiquetaTotal = new JLabel("Registros del reporte: 0");
+    @Override
+    protected String obtenerTituloPanel() {
+        return TITULO_PANEL;
+    }
 
-        etiquetaTipoReporte = new JLabel("Tipo de reporte:");
-        etiquetaFecha = new JLabel("Fecha:");
-        etiquetaMes = new JLabel("Mes:");
-        etiquetaAnio = new JLabel("Año:");
-        etiquetaFechaInicio = new JLabel("Desde:");
-        etiquetaFechaFin = new JLabel("Hasta:");
+    @Override
+    protected String obtenerTextoTotalInicial() {
+        return TEXTO_TOTAL_INICIAL;
+    }
 
-        botonGenerar = new JButton("Generar");
+    @Override
+    protected Object[] obtenerColumnas() {
+        return COLUMNAS_INICIALES;
+    }
+
+    private void inicializarComponentesReportes() {
+        etiquetaTipoReporte = new JLabel(TEXTO_LABEL_TIPO_REPORTE);
+        etiquetaFecha = new JLabel(TEXTO_LABEL_FECHA);
+        etiquetaMes = new JLabel(TEXTO_LABEL_MES);
+        etiquetaAnio = new JLabel(TEXTO_LABEL_ANIO);
+        etiquetaFechaInicio = new JLabel(TEXTO_LABEL_FECHA_INICIO);
+        etiquetaFechaFin = new JLabel(TEXTO_LABEL_FECHA_FIN);
+
+        botonGenerar = new JButton(TEXTO_BOTON_GENERAR);
 
         comboTipoReporte = new JComboBox<>();
-        comboTipoReporte.addItem("Ventas diarias");
-        comboTipoReporte.addItem("Ventas mensuales");
-        comboTipoReporte.addItem("Ventas anuales");
-        comboTipoReporte.addItem("Utilidad bruta");
-        comboTipoReporte.addItem("Productos más vendidos");
-        comboTipoReporte.addItem("Clientes con mayor volumen de compra");
-        comboTipoReporte.addItem("Comparación de ventas por forma de pago");
-        comboTipoReporte.addItem("Estado de inventario valorizado");
-        comboTipoReporte.addItem("Resumen contable por periodo");
+        comboTipoReporte.addItem(REPORTE_VENTAS_DIARIAS);
+        comboTipoReporte.addItem(REPORTE_VENTAS_MENSUALES);
+        comboTipoReporte.addItem(REPORTE_VENTAS_ANUALES);
+        comboTipoReporte.addItem(REPORTE_UTILIDAD_BRUTA);
+        comboTipoReporte.addItem(REPORTE_PRODUCTOS_MAS_VENDIDOS);
+        comboTipoReporte.addItem(REPORTE_CLIENTES_MAYOR_COMPRA);
+        comboTipoReporte.addItem(REPORTE_VENTAS_FORMA_PAGO);
+        comboTipoReporte.addItem(REPORTE_INVENTARIO_VALORIZADO);
+        comboTipoReporte.addItem(REPORTE_RESUMEN_CONTABLE);
 
         campoFecha = crearCampoFecha();
         campoFecha.setColumns(8);
@@ -79,39 +133,14 @@ public class PanelReportes extends JPanel {
 
         campoFechaFin = crearCampoFecha();
         campoFechaFin.setColumns(8);
-
-        modeloTabla = new DefaultTableModel();
-        tablaReportes = new JTable(modeloTabla);
-
-        panelSuperior = new JPanel();
-        panelFiltros = new JPanel();
-        panelInferior = new JPanel();
     }
 
-    private void configurarPanel() {
-        setLayout(new BorderLayout(10, 10));
-        setBackground(Color.WHITE);
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        etiquetaTitulo.setFont(new Font("Arial", Font.BOLD, 22));
-
-        panelSuperior.setLayout(new BorderLayout());
-        panelSuperior.setBackground(Color.WHITE);
-
-        panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelFiltros.setBackground(Color.WHITE);
-
-        panelInferior.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelInferior.setBackground(Color.WHITE);
-
-        tablaReportes.setRowHeight(25);
-        tablaReportes.getTableHeader().setReorderingAllowed(false);
-        tablaReportes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
+    private void configurarPanelReportes() {
+        botonGenerar.setBackground(Color.WHITE);
         comboTipoReporte.addActionListener(e -> actualizarFiltros());
     }
 
-    private void agregarComponentes() {
+    private void agregarComponentesReportes() {
         panelFiltros.add(etiquetaTipoReporte);
         panelFiltros.add(comboTipoReporte);
 
@@ -131,83 +160,50 @@ public class PanelReportes extends JPanel {
         panelFiltros.add(campoFechaFin);
 
         panelFiltros.add(botonGenerar);
-
-        JPanel panelCabecera = new JPanel();
-        panelCabecera.setLayout(new BorderLayout());
-        panelCabecera.setBackground(Color.WHITE);
-
-        panelCabecera.add(etiquetaTitulo, BorderLayout.NORTH);
-        panelCabecera.add(panelFiltros, BorderLayout.CENTER);
-        
-        //Color botones
-        botonGenerar.setBackground(Color.WHITE);
-
-        panelSuperior.add(panelCabecera, BorderLayout.CENTER);
-
-        JScrollPane scroll = new JScrollPane(tablaReportes);
-
-        panelInferior.add(etiquetaTotal);
-
-        add(panelSuperior, BorderLayout.NORTH);
-        add(scroll, BorderLayout.CENTER);
-        add(panelInferior, BorderLayout.SOUTH);
     }
 
     private void actualizarFiltros() {
-        String tipo = comboTipoReporte.getSelectedItem().toString();
+        String tipoReporte = comboTipoReporte.getSelectedItem().toString();
 
         ocultarFiltros();
 
-        if (tipo.equals("Ventas diarias")) {
+        if (tipoReporte.equals(REPORTE_VENTAS_DIARIAS)) {
             configurarVentasDiarias();
-        }
-
-        if (tipo.equals("Ventas mensuales")) {
+        } else if (tipoReporte.equals(REPORTE_VENTAS_MENSUALES)) {
             configurarVentasMensuales();
-        }
-
-        if (tipo.equals("Ventas anuales")) {
+        } else if (tipoReporte.equals(REPORTE_VENTAS_ANUALES)) {
             configurarVentasAnuales();
-        }
-
-        if (tipo.equals("Utilidad bruta")) {
+        } else if (tipoReporte.equals(REPORTE_UTILIDAD_BRUTA)) {
             configurarUtilidadBruta();
-        }
-
-        if (tipo.equals("Productos más vendidos")) {
+        } else if (tipoReporte.equals(REPORTE_PRODUCTOS_MAS_VENDIDOS)) {
             configurarProductosMasVendidos();
-        }
-
-        if (tipo.equals("Clientes con mayor volumen de compra")) {
+        } else if (tipoReporte.equals(REPORTE_CLIENTES_MAYOR_COMPRA)) {
             configurarClientesMayorCompra();
-        }
-
-        if (tipo.equals("Comparación de ventas por forma de pago")) {
+        } else if (tipoReporte.equals(REPORTE_VENTAS_FORMA_PAGO)) {
             configurarVentasPorFormaPago();
-        }
-
-        if (tipo.equals("Estado de inventario valorizado")) {
+        } else if (tipoReporte.equals(REPORTE_INVENTARIO_VALORIZADO)) {
             configurarInventarioValorizado();
-        }
-
-        if (tipo.equals("Resumen contable por periodo")) {
+        } else if (tipoReporte.equals(REPORTE_RESUMEN_CONTABLE)) {
             configurarResumenContable();
         }
 
-        modeloTabla.setRowCount(0);
-        etiquetaTotal.setText("Registros del reporte: 0");
+        limpiarTabla();
+        actualizarTextoTotal(TEXTO_TOTAL, 0);
 
         revalidate();
         repaint();
     }
 
+    public void inicializarEventos(Evento evento) {
+        // Cuando definas el comando en Evento, lo conectas aquí.
+        // botonGenerar.setActionCommand(Evento.CMD_GENERAR_REPORTE);
+        // botonGenerar.addActionListener(evento);
+    }
+
     private void configurarVentasDiarias() {
         etiquetaFecha.setVisible(true);
         campoFecha.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Fecha", "Total Ventas"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_VENTAS_DIARIAS);
     }
 
     private void configurarVentasMensuales() {
@@ -215,19 +211,13 @@ public class PanelReportes extends JPanel {
         campoMes.setVisible(true);
         etiquetaAnio.setVisible(true);
         campoAnio.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Mes", "Año", "Total Ventas"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_VENTAS_MENSUALES);
     }
 
     private void configurarVentasAnuales() {
         etiquetaAnio.setVisible(true);
         campoAnio.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Año", "Total Ventas"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_VENTAS_ANUALES);
     }
 
     private void configurarUtilidadBruta() {
@@ -235,10 +225,7 @@ public class PanelReportes extends JPanel {
         campoFechaInicio.setVisible(true);
         etiquetaFechaFin.setVisible(true);
         campoFechaFin.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Total Ventas", "Costo de Ventas", "Utilidad Bruta"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_UTILIDAD_BRUTA);
     }
 
     private void configurarProductosMasVendidos() {
@@ -246,10 +233,7 @@ public class PanelReportes extends JPanel {
         campoFechaInicio.setVisible(true);
         etiquetaFechaFin.setVisible(true);
         campoFechaFin.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Código", "Producto", "Cantidad Vendida"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_PRODUCTOS_MAS_VENDIDOS);
     }
 
     private void configurarClientesMayorCompra() {
@@ -257,10 +241,7 @@ public class PanelReportes extends JPanel {
         campoFechaInicio.setVisible(true);
         etiquetaFechaFin.setVisible(true);
         campoFechaFin.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Cliente", "Total Comprado"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_CLIENTES_MAYOR_COMPRA);
     }
 
     private void configurarVentasPorFormaPago() {
@@ -268,16 +249,11 @@ public class PanelReportes extends JPanel {
         campoFechaInicio.setVisible(true);
         etiquetaFechaFin.setVisible(true);
         campoFechaFin.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Forma de Pago", "Valor"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_VENTAS_FORMA_PAGO);
     }
 
     private void configurarInventarioValorizado() {
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Código", "Producto", "Stock", "Costo Unitario", "Valor Total"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_INVENTARIO_VALORIZADO);
     }
 
     private void configurarResumenContable() {
@@ -285,10 +261,7 @@ public class PanelReportes extends JPanel {
         campoFechaInicio.setVisible(true);
         etiquetaFechaFin.setVisible(true);
         campoFechaFin.setVisible(true);
-
-        modeloTabla.setColumnIdentifiers(new String[]{
-                "Ingresos", "Egresos", "Utilidad"
-        });
+        modeloTabla.setColumnIdentifiers(COLUMNAS_RESUMEN_CONTABLE);
     }
 
     private void ocultarFiltros() {

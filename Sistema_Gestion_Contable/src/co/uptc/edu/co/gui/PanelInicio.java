@@ -5,10 +5,14 @@ import java.awt.*;
 
 public class PanelInicio extends JPanel {
 
+    private static final String TEXTO_TITULO = "Sistema de Gestión Contable y Comercial";
+    private static final String TEXTO_BIENVENIDA = "Bienvenido";
+    private static final String TEXTO_INSTRUCCION = "Seleccione un modulo en la barra superior para comenzar";
+
     private JLabel etiquetaTitulo;
     private JLabel etiquetaBienvenida;
     private JLabel etiquetaInstruccion;
-    
+
     private JPanel panelCentral;
 
     public PanelInicio() {
@@ -18,10 +22,9 @@ public class PanelInicio extends JPanel {
     }
 
     private void inicializarComponentes() {
-        etiquetaTitulo = new JLabel("Sistema de Gestión Contable y Comercial");
-        etiquetaBienvenida = new JLabel("Bienvenido");
-        etiquetaInstruccion = new JLabel("Seleccione un modulo en la barra superior para comenzar");
-       
+        etiquetaTitulo = new JLabel(TEXTO_TITULO);
+        etiquetaBienvenida = new JLabel(TEXTO_BIENVENIDA);
+        etiquetaInstruccion = new JLabel(TEXTO_INSTRUCCION);
 
         panelCentral = new JPanel();
     }
@@ -46,24 +49,22 @@ public class PanelInicio extends JPanel {
     }
 
     private void agregarComponentes() {
-    	GridBagConstraints posicionPanel = new GridBagConstraints();
-    	posicionPanel.gridx = 0;
-    	posicionPanel.gridy = 0;
-    	add(panelCentral, posicionPanel);
+        GridBagConstraints posicionPanel = new GridBagConstraints();
+        posicionPanel.gridx = 0;
+        posicionPanel.gridy = 0;
+        add(panelCentral, posicionPanel);
 
-    	GridBagConstraints posicionTexto = new GridBagConstraints();
-    	posicionTexto.gridx = 0;
-    	posicionTexto.insets = new Insets(10, 10, 10, 10);
+        GridBagConstraints posicionTexto = new GridBagConstraints();
+        posicionTexto.gridx = 0;
+        posicionTexto.insets = new Insets(10, 10, 10, 10);
 
-    	posicionTexto.gridy = 0;
-    	panelCentral.add(etiquetaTitulo, posicionTexto);
+        posicionTexto.gridy = 0;
+        panelCentral.add(etiquetaTitulo, posicionTexto);
 
-    	posicionTexto.gridy = 1;
-    	panelCentral.add(etiquetaBienvenida, posicionTexto);
+        posicionTexto.gridy = 1;
+        panelCentral.add(etiquetaBienvenida, posicionTexto);
 
-    	posicionTexto.gridy = 2;
-    	panelCentral.add(etiquetaInstruccion, posicionTexto);
-
-       
+        posicionTexto.gridy = 2;
+        panelCentral.add(etiquetaInstruccion, posicionTexto);
     }
 }

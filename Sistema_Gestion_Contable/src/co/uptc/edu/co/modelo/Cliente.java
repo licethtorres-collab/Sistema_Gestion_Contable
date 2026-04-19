@@ -1,23 +1,26 @@
 package co.uptc.edu.co.modelo;
 
+import co.uptc.edu.co.modelo.enums.EstadoEnum;
+import co.uptc.edu.co.modelo.enums.TipoClienteEnum;
+import co.uptc.edu.co.modelo.enums.TipoDocEnum;
+
 public class Cliente {
 
     private String codigo;
     private String nombre;
-    private String tipoIdentificacion;
+    private TipoDocEnum tipoIdentificacion;
     private String numeroIdentificacion;
     private String direccion;
     private String telefono;
-    private String tipoCliente;
-    private String estado;
+    private TipoClienteEnum tipoCliente;
+    private EstadoEnum estado;
 
     public Cliente() {
-
     }
 
-    public Cliente(String codigo, String nombre, String tipoIdentificacion,
+    public Cliente(String codigo, String nombre, TipoDocEnum tipoIdentificacion,
                    String numeroIdentificacion, String direccion, String telefono,
-                   String tipoCliente, String estado) {
+                   TipoClienteEnum tipoCliente, EstadoEnum estado) {
 
         this.codigo = codigo;
         this.nombre = nombre;
@@ -45,11 +48,11 @@ public class Cliente {
         this.nombre = nombre;
     }
 
-    public String getTipoIdentificacion() {
+    public TipoDocEnum getTipoIdentificacion() {
         return tipoIdentificacion;
     }
 
-    public void setTipoIdentificacion(String tipoIdentificacion) {
+    public void setTipoIdentificacion(TipoDocEnum tipoIdentificacion) {
         this.tipoIdentificacion = tipoIdentificacion;
     }
 
@@ -77,24 +80,24 @@ public class Cliente {
         this.telefono = telefono;
     }
 
-    public String getTipoCliente() {
+    public TipoClienteEnum getTipoCliente() {
         return tipoCliente;
     }
 
-    public void setTipoCliente(String tipoCliente) {
+    public void setTipoCliente(TipoClienteEnum tipoCliente) {
         this.tipoCliente = tipoCliente;
     }
 
-    public String getEstado() {
+    public EstadoEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoEnum estado) {
         this.estado = estado;
     }
 
     public boolean estaActivo() {
-        return "Activo".equalsIgnoreCase(estado);
+        return estado == EstadoEnum.ACTIVO;
     }
 
     @Override

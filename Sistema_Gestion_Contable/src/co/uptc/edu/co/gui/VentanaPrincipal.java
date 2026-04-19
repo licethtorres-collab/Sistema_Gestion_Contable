@@ -3,6 +3,8 @@ package co.uptc.edu.co.gui;
 import javax.swing.*;
 import java.awt.*;
 
+import co.uptc.edu.co.config.TiendaConfig;
+
 public class VentanaPrincipal extends JFrame {
 
     private JPanel panelEncabezado;
@@ -18,6 +20,7 @@ public class VentanaPrincipal extends JFrame {
     private JButton botonConsultas;
 
     private Evento evento;
+    private TiendaConfig config;
 
     private PanelProducto panelProducto;
     private PanelCliente panelCliente;
@@ -30,6 +33,7 @@ public class VentanaPrincipal extends JFrame {
     private PanelInicio panelInicio;
 
     public VentanaPrincipal() {
+    	config = new TiendaConfig();
         inicializarComponentes();
         configurarVentana();
         agregarComponentes();
@@ -111,7 +115,7 @@ public class VentanaPrincipal extends JFrame {
     }
 
     private void inicializarEventos() {
-        evento = new Evento(this);
+        evento = new Evento(this,config);
 
         botonProductos.setActionCommand(Evento.PRODUCTOS);
         botonProductos.addActionListener(evento);
@@ -139,7 +143,13 @@ public class VentanaPrincipal extends JFrame {
 
         panelProducto.inicializarEventos(evento);
         panelCliente.inicializarEventos(evento);
-       
+        panelProveedor.inicializarEventos(evento);
+        panelVenta.inicializarEventos(evento);
+        panelCompra.inicializarEventos(evento);
+        panelContabilidad.inicializarEventos(evento);
+        panelReportes.inicializarEventos(evento);
+        panelConsultas.inicializarEventos(evento);
+        
     }
 
     public void mostrarPanel(JPanel panel) {
@@ -183,6 +193,10 @@ public class VentanaPrincipal extends JFrame {
 
     public PanelProducto getPanelProducto() {
         return panelProducto;
+    }
+    
+    public PanelCliente getPanelCliente() {
+        return panelCliente;
     }
 
     public static void main(String[] args) {

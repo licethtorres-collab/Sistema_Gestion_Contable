@@ -2,6 +2,7 @@ package co.uptc.edu.co.gui.dialog;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -17,27 +18,26 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-public class DialogProveedor extends JDialog {
+public class DialogRegistrarCompra extends JDialog {
 
-    private JTextField campoCodigo;
-    private JTextField campoRazonSocial;
-    private JTextField campoNit;
-    private JTextField campoDireccion;
-    private JTextField campoTelefono;
-    private JTextField campoCorreoElectronico;
+    private JTextField campoFacturaProveedor;
+    private JTextField campoFecha;
+    private JComboBox<String> comboProveedor;
+    private JTextField campoProducto;
+    private JTextField campoCantidad;
+    private JTextField campoCostoUnitario;
+    private JTextField campoImpuestos;
+    private JTextField campoTotal;
 
     private JButton botonGuardar;
     private JButton botonCancelar;
 
-    private boolean modoEdicion;
-
-    public DialogProveedor(Frame propietario) {
+    public DialogRegistrarCompra(Frame propietario) {
         this(propietario, null);
     }
 
-    public DialogProveedor(Frame propietario, Evento evento) {
-        super(propietario, "Registrar Proveedor", true);
-        modoEdicion = false;
+    public DialogRegistrarCompra(Frame propietario, Evento evento) {
+        super(propietario, "Registrar Compra", true);
         inicializarComponentes();
         configurarDialogo();
         agregarComponentes();
@@ -45,12 +45,17 @@ public class DialogProveedor extends JDialog {
     }
 
     private void inicializarComponentes() {
-        campoCodigo = new JTextField(25);
-        campoRazonSocial = new JTextField(25);
-        campoNit = new JTextField(25);
-        campoDireccion = new JTextField(25);
-        campoTelefono = new JTextField(25);
-        campoCorreoElectronico = new JTextField(25);
+        campoFacturaProveedor = new JTextField(25);
+        campoFecha = new JTextField(25);
+
+        comboProveedor = new JComboBox<>();
+        comboProveedor.addItem("Seleccione proveedor");
+
+        campoProducto = new JTextField(25);
+        campoCantidad = new JTextField(25);
+        campoCostoUnitario = new JTextField(25);
+        campoImpuestos = new JTextField(25);
+        campoTotal = new JTextField(25);
 
         botonGuardar = new JButton("Guardar");
         botonCancelar = new JButton("Cancelar");
@@ -62,7 +67,7 @@ public class DialogProveedor extends JDialog {
     }
 
     private void configurarDialogo() {
-        setSize(420, 500);
+        setSize(420, 620);
         setLocationRelativeTo(getOwner());
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -81,40 +86,52 @@ public class DialogProveedor extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(8, 0, 4, 0);
 
-        panelPrincipal.add(new JLabel("Código:"), gbc);
+        panelPrincipal.add(new JLabel("Factura del proveedor:"), gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(campoCodigo, gbc);
+        panelPrincipal.add(campoFacturaProveedor, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Razón social:"), gbc);
+        panelPrincipal.add(new JLabel("Fecha:"), gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(campoRazonSocial, gbc);
+        panelPrincipal.add(campoFecha, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("NIT:"), gbc);
+        panelPrincipal.add(new JLabel("Proveedor:"), gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(campoNit, gbc);
+        panelPrincipal.add(comboProveedor, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Dirección:"), gbc);
+        panelPrincipal.add(new JLabel("Producto:"), gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(campoDireccion, gbc);
+        panelPrincipal.add(campoProducto, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Teléfono:"), gbc);
+        panelPrincipal.add(new JLabel("Cantidad:"), gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(campoTelefono, gbc);
+        panelPrincipal.add(campoCantidad, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Correo electrónico:"), gbc);
+        panelPrincipal.add(new JLabel("Costo unitario:"), gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(campoCorreoElectronico, gbc);
+        panelPrincipal.add(campoCostoUnitario, gbc);
+
+        gbc.gridy++;
+        panelPrincipal.add(new JLabel("Impuestos:"), gbc);
+
+        gbc.gridy++;
+        panelPrincipal.add(campoImpuestos, gbc);
+
+        gbc.gridy++;
+        panelPrincipal.add(new JLabel("Total:"), gbc);
+
+        gbc.gridy++;
+        panelPrincipal.add(campoTotal, gbc);
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         panelBotones.add(botonGuardar);
@@ -133,25 +150,17 @@ public class DialogProveedor extends JDialog {
         botonCancelar.addActionListener(e -> dispose());
 
         if (evento != null) {
-            botonGuardar.setActionCommand(Evento.CMD_CONFIRMAR_PROVEEDOR);
+            botonGuardar.setActionCommand(Evento.CMD_CONFIRMAR_REGISTRO_COMPRA);
             botonGuardar.addActionListener(evento);
         } else {
             botonGuardar.addActionListener(e -> {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Formulario de proveedor abierto correctamente.",
+                        "Formulario de compra abierto correctamente.",
                         "Información",
                         JOptionPane.INFORMATION_MESSAGE
                 );
             });
         }
-    }
-
-    public void configurarModoEdicion() {
-        modoEdicion = true;
-        setTitle("Editar Proveedor");
-        botonGuardar.setText("Actualizar");
-        botonGuardar.setActionCommand(Evento.CMD_CONFIRMAR_EDICION_PROVEEDOR);
-        campoCodigo.setEditable(false);
     }
 }

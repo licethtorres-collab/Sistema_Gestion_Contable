@@ -1,13 +1,11 @@
 package co.uptc.edu.co.gui.dialog;
 
 import javax.swing.JDialog;
-
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,11 +16,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import co.uptc.edu.co.gui.Evento;
+import co.uptc.edu.co.modelo.enums.TipoMovimientoInventarioEnum;
 
 public class DialogMovimientoInventario extends JDialog {
 
     private JTextField campoCodigoProducto;
-    private JComboBox<String> comboTipoMovimiento;
+    private JComboBox<TipoMovimientoInventarioEnum> comboTipoMovimiento;
     private JTextField campoCantidad;
     private JTextField campoFecha;
     private JTextArea campoDescripcionMovimiento;
@@ -45,9 +44,7 @@ public class DialogMovimientoInventario extends JDialog {
     private void inicializarComponentes() {
         campoCodigoProducto = new JTextField(25);
 
-        comboTipoMovimiento = new JComboBox<>();
-        comboTipoMovimiento.addItem("Entrada");
-        comboTipoMovimiento.addItem("Salida");
+        comboTipoMovimiento = new JComboBox<>(TipoMovimientoInventarioEnum.values());
 
         campoCantidad = new JTextField(25);
         campoFecha = new JTextField(25);
@@ -163,7 +160,9 @@ public class DialogMovimientoInventario extends JDialog {
     }
 
     public String obtenerTipoMovimiento() {
-        return comboTipoMovimiento.getSelectedItem().toString();
+        TipoMovimientoInventarioEnum tipoMovimiento =
+                (TipoMovimientoInventarioEnum) comboTipoMovimiento.getSelectedItem();
+        return tipoMovimiento.name();
     }
 
     public int obtenerCantidad() throws Exception {

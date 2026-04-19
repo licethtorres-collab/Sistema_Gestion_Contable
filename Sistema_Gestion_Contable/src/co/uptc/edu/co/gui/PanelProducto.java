@@ -1,19 +1,42 @@
 package co.uptc.edu.co.gui;
 
 import co.uptc.edu.co.modelo.Producto;
+import co.uptc.edu.co.modelo.enums.CategoriaProductoEnum;
+import co.uptc.edu.co.modelo.enums.EstadoEnum;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanelProducto extends JPanel {
+public class PanelProducto extends PanelCentral {
 
-    private JLabel etiquetaTitulo;
-    private JLabel etiquetaTotal;
+    private static final String TITULO_PANEL = "Gestión de Productos";
+    private static final String TEXTO_TOTAL_INICIAL = "Total de productos: 0";
+    private static final String TEXTO_TOTAL = "Total de productos: ";
+
+    private static final String TEXTO_BOTON_CAMBIAR_ESTADO = "Cambiar Estado";
+    private static final String TEXTO_BOTON_INACTIVAR = "Inactivar";
+    private static final String TEXTO_BOTON_ACTIVAR = "Activar";
+
+    private static final String OPCION_TODOS = "Todos";
+
+    private static final Object[] COLUMNAS = {
+            "Código",
+            "Nombre",
+            "Categoría",
+            "Precio Compra",
+            "Precio Venta",
+            "Stock Actual",
+            "Stock Mínimo",
+            "Stock Máximo",
+            "Estado"
+    };
+
+    private static final int COLUMNA_CODIGO = 0;
+    private static final int COLUMNA_ESTADO = 8;
 
     private JButton botonNuevo;
     private JButton botonEditar;
@@ -24,92 +47,55 @@ public class PanelProducto extends JPanel {
     private JTextField campoBuscar;
     private JComboBox<String> comboCategoria;
 
-    private JTable tablaProductos;
-    private DefaultTableModel modeloTabla;
-
-    private JPanel panelSuperior;
-    private JPanel panelBotones;
-    private JPanel panelFiltros;
-    private JPanel panelInferior;
-
     private List<Producto> productosCargados;
 
     public PanelProducto() {
+        super();
         productosCargados = new ArrayList<>();
-        inicializarComponentes();
-        configurarPanel();
-        agregarComponentes();
+        inicializarComponentesProducto();
+        configurarPanelProducto();
+        agregarComponentesProducto();
         inicializarFiltros();
     }
 
-    private void inicializarComponentes() {
-        etiquetaTitulo = new JLabel("Gestión de Productos");
-        etiquetaTotal = new JLabel("Total de productos: 0");
+    @Override
+    protected String obtenerTituloPanel() {
+        return TITULO_PANEL;
+    }
 
+    @Override
+    protected String obtenerTextoTotalInicial() {
+        return TEXTO_TOTAL_INICIAL;
+    }
+
+    @Override
+    protected Object[] obtenerColumnas() {
+        return COLUMNAS;
+    }
+
+    private void inicializarComponentesProducto() {
         botonNuevo = new JButton("Nuevo");
         botonEditar = new JButton("Editar");
-        botonEstadoProducto = new JButton("Estado");
+        botonEstadoProducto = new JButton(TEXTO_BOTON_CAMBIAR_ESTADO);
         botonActualizarPrecio = new JButton("Actualizar Precio");
         botonMovimientoInventario = new JButton("Movimiento Inventario");
 
         campoBuscar = new JTextField(20);
 
         comboCategoria = new JComboBox<>();
-        comboCategoria.addItem("Todos");
-        comboCategoria.addItem("Aseo");
-        comboCategoria.addItem("Alimentos");
-        comboCategoria.addItem("Bebidas");
-        comboCategoria.addItem("Papelería");
-
-        String[] columnas = {
-                "Código",
-                "Nombre",
-                "Categoría",
-                "Precio Compra",
-                "Precio Venta",
-                "Stock Actual",
-                "Stock Mínimo",
-                "Stock Maximo",
-                "Estado"
-        };
-        // tabla no editable
-        modeloTabla = new DefaultTableModel(columnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
-
-        tablaProductos = new JTable(modeloTabla);
-
-        panelSuperior = new JPanel();
-        panelBotones = new JPanel();
-        panelFiltros = new JPanel();
-        panelInferior = new JPanel();
+        comboCategoria.addItem(OPCION_TODOS);
+        comboCategoria.addItem(CategoriaProductoEnum.ASEO.toString());
+        comboCategoria.addItem(CategoriaProductoEnum.ALIMENTOS.toString());
+        comboCategoria.addItem(CategoriaProductoEnum.BEBIDAS.toString());
+        comboCategoria.addItem(CategoriaProductoEnum.PAPELERIA.toString());
     }
 
-    private void configurarPanel() {
-        setLayout(new BorderLayout(10, 10));
-        setBackground(Color.WHITE);
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        etiquetaTitulo.setFont(new Font("Arial", Font.BOLD, 22));
-
-        panelSuperior.setLayout(new BorderLayout());
-        panelSuperior.setBackground(Color.WHITE);
-
-        panelBotones.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelBotones.setBackground(Color.WHITE);
-
-        panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelFiltros.setBackground(Color.WHITE);
-
-        panelInferior.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelInferior.setBackground(Color.WHITE);
-
-        tablaProductos.setRowHeight(25);
-        tablaProductos.getTableHeader().setReorderingAllowed(false);
-        tablaProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    private void configurarPanelProducto() {
+        tabla.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                actualizarTextoBotonSegunSeleccion();
+            }
+        });
 
         botonNuevo.setBackground(Color.WHITE);
         botonEditar.setBackground(Color.WHITE);
@@ -118,7 +104,7 @@ public class PanelProducto extends JPanel {
         botonMovimientoInventario.setBackground(Color.WHITE);
     }
 
-    private void agregarComponentes() {
+    private void agregarComponentesProducto() {
         panelBotones.add(botonNuevo);
         panelBotones.add(botonEditar);
         panelBotones.add(botonEstadoProducto);
@@ -127,28 +113,10 @@ public class PanelProducto extends JPanel {
 
         panelFiltros.add(new JLabel("Buscar:"));
         panelFiltros.add(campoBuscar);
-        panelFiltros.add(new JLabel("Categoria:"));
+        panelFiltros.add(new JLabel("Categoría:"));
         panelFiltros.add(comboCategoria);
-
-        JPanel panelCabecera = new JPanel(new BorderLayout());
-        panelCabecera.setBackground(Color.WHITE);
-
-        panelCabecera.add(etiquetaTitulo, BorderLayout.NORTH);
-        panelCabecera.add(panelBotones, BorderLayout.CENTER);
-        panelCabecera.add(panelFiltros, BorderLayout.SOUTH);
-
-        panelSuperior.add(panelCabecera, BorderLayout.CENTER);
-
-        JScrollPane scroll = new JScrollPane(tablaProductos);
-
-        panelInferior.add(etiquetaTotal);
-
-        add(panelSuperior, BorderLayout.NORTH);
-        add(scroll, BorderLayout.CENTER);
-        add(panelInferior, BorderLayout.SOUTH);
     }
-    
-    // inicializar filtros
+
     private void inicializarFiltros() {
         campoBuscar.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -169,8 +137,7 @@ public class PanelProducto extends JPanel {
 
         comboCategoria.addActionListener(e -> aplicarFiltros());
     }
-    
-    // inicializar eventos
+
     public void inicializarEventos(Evento evento) {
         botonNuevo.setActionCommand(Evento.CMD_NUEVO_PRODUCTO);
         botonNuevo.addActionListener(evento);
@@ -187,9 +154,11 @@ public class PanelProducto extends JPanel {
         botonMovimientoInventario.setActionCommand(Evento.CMD_MOVIMIENTO_INVENTARIO);
         botonMovimientoInventario.addActionListener(evento);
     }
+
     public void cargarProductos(List<Producto> productos) {
         productosCargados = new ArrayList<>(productos);
         aplicarFiltros();
+        restablecerTextoBotonEstado();
     }
 
     private void aplicarFiltros() {
@@ -206,8 +175,8 @@ public class PanelProducto extends JPanel {
                     producto.getNombreProducto().toLowerCase().contains(textoBusqueda);
 
             boolean coincideCategoria =
-                    categoriaSeleccionada.equals("Todos") ||
-                    producto.getCategoria().equalsIgnoreCase(categoriaSeleccionada);
+                    categoriaSeleccionada.equals(OPCION_TODOS) ||
+                    producto.getCategoria().toString().equalsIgnoreCase(categoriaSeleccionada);
 
             if (coincideBusqueda && coincideCategoria) {
                 Object[] fila = {
@@ -226,24 +195,38 @@ public class PanelProducto extends JPanel {
             }
         }
 
-        etiquetaTotal.setText("Total de productos: " + totalFiltrados);
+        actualizarTextoTotal(TEXTO_TOTAL, totalFiltrados);
     }
 
-    public void limpiarTabla() {
-        modeloTabla.setRowCount(0);
+    private void actualizarTextoBotonSegunSeleccion() {
+        String estado = obtenerEstadoSeleccionado();
+        actualizarTextoBotonEstado(estado);
+    }
+
+    public String obtenerEstadoSeleccionado() {
+        Object valor = obtenerValorSeleccionado(COLUMNA_ESTADO);
+        return valor == null ? null : valor.toString();
+    }
+
+    public void actualizarTextoBotonEstado(String estado) {
+        if (estado == null) {
+            botonEstadoProducto.setText(TEXTO_BOTON_CAMBIAR_ESTADO);
+            return;
+        }
+
+        if (estado.equalsIgnoreCase(EstadoEnum.ACTIVO.name())) {
+            botonEstadoProducto.setText(TEXTO_BOTON_INACTIVAR);
+        } else {
+            botonEstadoProducto.setText(TEXTO_BOTON_ACTIVAR);
+        }
+    }
+
+    public void restablecerTextoBotonEstado() {
+        botonEstadoProducto.setText(TEXTO_BOTON_CAMBIAR_ESTADO);
     }
 
     public String obtenerCodigoSeleccionado() {
-        int filaSeleccionada = tablaProductos.getSelectedRow();
-
-        if (filaSeleccionada == -1) {
-            return null;
-        }
-
-        return modeloTabla.getValueAt(filaSeleccionada, 0).toString();
-    }
-
-    public boolean haySeleccion() {
-        return tablaProductos.getSelectedRow() != -1;
+        Object valor = obtenerValorSeleccionado(COLUMNA_CODIGO);
+        return valor == null ? null : valor.toString();
     }
 }

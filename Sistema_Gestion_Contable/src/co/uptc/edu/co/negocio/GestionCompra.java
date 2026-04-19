@@ -1,5 +1,7 @@
 package co.uptc.edu.co.negocio;
 
-public class GestionCompra {
+import co.uptc.edu.co.interfaces.IGestionCompra;
+
+public class GestionCompra implements IGestionCompra{
 
 }

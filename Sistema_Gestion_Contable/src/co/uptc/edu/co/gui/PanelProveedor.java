@@ -1,129 +1,96 @@
 package co.uptc.edu.co.gui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class PanelProveedor extends JPanel {
-	
+public class PanelProveedor extends PanelCentral {
 
-    private JLabel etiquetaTitulo;
-    private JLabel etiquetaTotal;
-    
+    private static final String TITULO_PANEL = "Gestión de Proveedores";
+    private static final String TEXTO_TOTAL_INICIAL = "Total de proveedores: 0";
+    private static final String TEXTO_TOTAL = "Total de proveedores: ";
+
+    private static final String TEXTO_BOTON_CAMBIAR_ESTADO = "Cambiar Estado";
+
+    private static final String[] COLUMNAS = {
+            "Código",
+            "Razón Social",
+            "NIT",
+            "Dirección",
+            "Teléfono",
+            "Correo Electrónico",
+            "Estado"
+    };
+
     private JButton botonNuevo;
     private JButton botonEditar;
-    private JButton botonInactivar;
+    private JButton botonCambiarEstado;
     private JButton botonRegistrarCompra;
-    
+
     private JTextField campoBuscar;
-   
-    
-    private JTable tablaProveedores;
-    private DefaultTableModel modeloTabla;
-    
-    
-    private JPanel panelSuperior;
-    private JPanel panelBotones;
-    private JPanel panelFiltros;
-    private JPanel panelInferior;
-    
-    
+
     public PanelProveedor() {
-    	inicializarComponentes();
-    	configurarPanel();
-    	agregarComponentes();
-    	
+        super();
+        inicializarComponentesProveedor();
+        configurarPanelProveedor();
+        agregarComponentesProveedor();
     }
-    
-    private void inicializarComponentes(){
-    	
-    	etiquetaTitulo = new JLabel("Gestión de Proveedores");
-    	etiquetaTotal = new JLabel("Total de proveedores: 0");
-    	
-    	botonNuevo = new JButton("Nuevo");
-    	botonEditar = new JButton("Editar");
-    	botonInactivar = new JButton("Inactivar");
-    	botonRegistrarCompra = new JButton("Registrar Compra");
-    	
-    	campoBuscar = new JTextField(20);
-    	
-    	String[] columnas = {
-    		    "Código",
-    		    "Razón Social",
-    		    "NIT",
-    		    "Dirección",
-    		    "Teléfono",
-    		    "Correo Electrónico",
-    		    "Estado"
-    		};
-    	
-    	modeloTabla = new DefaultTableModel(columnas,0);
-    	tablaProveedores = new JTable(modeloTabla);
-    	setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-    	
-    	panelSuperior = new JPanel();
-    	panelBotones = new JPanel();
-    	panelFiltros = new JPanel();
-    	panelInferior = new JPanel();
-    	
+
+    @Override
+    protected String obtenerTituloPanel() {
+        return TITULO_PANEL;
     }
-    private void configurarPanel(){
-    	
-    	setLayout(new BorderLayout(10,10));
-    	setBackground(Color.WHITE);
-    	
-    	etiquetaTitulo.setFont(new Font("Arial",Font.BOLD,22));
-    	
-    	panelSuperior.setLayout(new BorderLayout());
-    	panelSuperior.setBackground(Color.WHITE);
-    	
-    	panelBotones.setLayout(new FlowLayout(FlowLayout.LEFT));
-    	panelBotones.setBackground(Color.WHITE);
-    	
-    	panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
-    	panelFiltros.setBackground(Color.WHITE);
-    	
-    	panelInferior.setLayout(new FlowLayout(FlowLayout.LEFT));
-    	panelInferior.setBackground(Color.WHITE);
-    	
-    	tablaProveedores.setRowHeight(25);
-        tablaProveedores.getTableHeader().setReorderingAllowed(false);
-        tablaProveedores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    	
+
+    @Override
+    protected String obtenerTextoTotalInicial() {
+        return TEXTO_TOTAL_INICIAL;
     }
-    private void agregarComponentes(){
 
-    	panelBotones.add(botonNuevo);
-    	panelBotones.add(botonEditar);
-    	panelBotones.add(botonInactivar);
-    	panelBotones.add(botonRegistrarCompra);
+    @Override
+    protected Object[] obtenerColumnas() {
+        return COLUMNAS;
+    }
 
-    	panelFiltros.add(new JLabel("Buscar:"));
-    	panelFiltros.add(campoBuscar);
-    
+    private void inicializarComponentesProveedor() {
+        botonNuevo = new JButton("Nuevo");
+        botonEditar = new JButton("Editar");
+        botonCambiarEstado = new JButton(TEXTO_BOTON_CAMBIAR_ESTADO);
+        botonRegistrarCompra = new JButton("Registrar Compra");
 
-    	JPanel panelCabecera = new JPanel();
-    	panelCabecera.setLayout(new BorderLayout());
-    	panelCabecera.setBackground(Color.WHITE);
+        campoBuscar = new JTextField(20);
+    }
 
-    	panelCabecera.add(etiquetaTitulo, BorderLayout.NORTH);
-        panelCabecera.add(panelBotones, BorderLayout.CENTER);
-    	panelCabecera.add(panelFiltros, BorderLayout.SOUTH);
-    	
-    	//Colores Botones
-    	botonNuevo.setBackground(Color.WHITE);
-    	botonEditar.setBackground(Color.WHITE);
-        botonInactivar.setBackground(Color.WHITE);
+    private void configurarPanelProveedor() {
+        botonNuevo.setBackground(Color.WHITE);
+        botonEditar.setBackground(Color.WHITE);
+        botonCambiarEstado.setBackground(Color.WHITE);
         botonRegistrarCompra.setBackground(Color.WHITE);
-    	 
-    	panelSuperior.add(panelCabecera, BorderLayout.CENTER);
+    }
 
-        JScrollPane scroll = new JScrollPane(tablaProveedores);
+    private void agregarComponentesProveedor() {
+        panelBotones.add(botonNuevo);
+        panelBotones.add(botonEditar);
+        panelBotones.add(botonCambiarEstado);
+        panelBotones.add(botonRegistrarCompra);
 
-        panelInferior.add(etiquetaTotal);
+        panelFiltros.add(new JLabel("Buscar:"));
+        panelFiltros.add(campoBuscar);
+    }
 
-    	add(panelSuperior, BorderLayout.NORTH);
-    	add(scroll, BorderLayout.CENTER);
-    	add(panelInferior, BorderLayout.SOUTH);
-    	}
+    public void inicializarEventos(Evento evento) {
+        botonNuevo.setActionCommand(Evento.CMD_NUEVO_PROVEEDOR);
+        botonNuevo.addActionListener(evento);
+
+        botonEditar.setActionCommand(Evento.CMD_EDITAR_PROVEEDOR);
+        botonEditar.addActionListener(evento);
+
+        botonCambiarEstado.setActionCommand(Evento.CMD_ESTADO_PROVEEDOR);
+        botonCambiarEstado.addActionListener(evento);
+
+        botonRegistrarCompra.setActionCommand(Evento.CMD_REGISTRAR_COMPRA_PROVEEDOR);
+        botonRegistrarCompra.addActionListener(evento);
+    }
+
+    public void actualizarTotalProveedores(int total) {
+        actualizarTextoTotal(TEXTO_TOTAL, total);
+    }
 }

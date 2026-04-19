@@ -1,23 +1,26 @@
 package co.uptc.edu.co.modelo;
 
+import co.uptc.edu.co.modelo.enums.CategoriaProductoEnum;
+import co.uptc.edu.co.modelo.enums.EstadoEnum;
+
 public class Producto {
 
     private String codigoProducto;
     private String nombreProducto;
-    private String categoria;
+    private CategoriaProductoEnum categoria;
     private double precioCompra;
     private double precioVenta;
     private int stockActual;
     private int stockMinimo;
     private int stockMaximo;
-    private String estado;
+    private EstadoEnum estado;
 
     public Producto() {
     }
 
-    public Producto(String codigoProducto, String nombreProducto, String categoria,
+    public Producto(String codigoProducto, String nombreProducto, CategoriaProductoEnum categoria,
             double precioCompra, double precioVenta,
-            int stockActual, int stockMinimo, int stockMaximo, String estado) {
+            int stockActual, int stockMinimo, int stockMaximo, EstadoEnum estado) {
 
         this.codigoProducto = codigoProducto;
         this.nombreProducto = nombreProducto;
@@ -46,11 +49,11 @@ public class Producto {
         this.nombreProducto = nombreProducto;
     }
 
-    public String getCategoria() {
+    public CategoriaProductoEnum getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(String categoria) {
+    public void setCategoria(CategoriaProductoEnum categoria) {
         this.categoria = categoria;
     }
 
@@ -94,16 +97,16 @@ public class Producto {
         this.stockMaximo = stockMaximo;
     }
 
-    public String getEstado() {
+    public EstadoEnum getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoEnum estado) {
         this.estado = estado;
     }
 
     public boolean estaActivo() {
-        return "ACTIVO".equalsIgnoreCase(estado);
+        return estado == EstadoEnum.ACTIVO;
     }
 
     public boolean stockBajoMinimo() {

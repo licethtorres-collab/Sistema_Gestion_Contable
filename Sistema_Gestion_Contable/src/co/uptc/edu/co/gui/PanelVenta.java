@@ -1,161 +1,108 @@
 package co.uptc.edu.co.gui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class PanelVenta extends JPanel {
+public class PanelVenta extends PanelCentral {
 
-    private JLabel etiquetaTitulo;
-    private JLabel etiquetaTotalVentas;
-    
+    private static final String TITULO_PANEL = "Gestión de Ventas";
+    private static final String TEXTO_TOTAL_INICIAL = "Total de ventas: 0";
+    private static final String TEXTO_TOTAL = "Total de ventas: ";
+
+    private static final String OPCION_TODOS = "Todos";
+
+    private static final String[] COLUMNAS = {
+            "Factura",
+            "Fecha",
+            "Hora",
+            "Cliente",
+            "Forma de Pago",
+            "Medio de Pago",
+            "IVA",
+            "Retenciones",
+            "Total",
+            "Estado"
+    };
 
     private JButton botonNuevaVenta;
     private JButton botonAnularVenta;
     private JButton botonVerDetalle;
     private JButton botonFactura;
-    
+
     private JTextField campoBuscar;
     private JComboBox<String> comboCliente;
     private JComboBox<String> comboPago;
-    
-    private JTable tablaVentas;
-    private DefaultTableModel modeloTabla;
-    
-    private JPanel panelSuperior;
-    private JPanel panelBotones;
-    private JPanel panelFiltros;
-    private JPanel panelInferior;
-    
-   public PanelVenta(){
-	   
-	   inicializarComponentes();
-	   configurarPanel();
-	   agregarComponentes();
-	   
-	   
-   }
-   
-   private void inicializarComponentes(){
-	  
-	   etiquetaTitulo = new JLabel("Gestion de ventas");
-	   etiquetaTotalVentas = new JLabel("Total de ventas:  0 ");
-	   
-	   botonNuevaVenta = new JButton("Nueva Venta");
-	   botonAnularVenta = new JButton("Anular");
-	   botonVerDetalle = new JButton("Ver Detalle");
-	   botonFactura = new JButton("Factura");
-	   
-	   campoBuscar = new JTextField(20);
-	   
-	   comboCliente = new JComboBox<>();
-	   comboCliente.addItem("Todos");
-	   comboCliente.addItem("Cliente 1");
-	   comboCliente.addItem("Cliente 2");
-	   
-	   comboPago = new JComboBox<>();
-	   comboPago.addItem("todos");
-	   comboPago.addItem("Efectivo");
-	   comboPago.addItem("Tarjeta");
-	   comboPago.addItem("Trasferencia");
-	   
-	   String[] columnas = {
-               "Factura",
-               "Fecha",
-               "Hora",
-               "Cliente",
-               "Forma de Pago",
-               "Medio de Pago",
-               "IVA",
-               "Retenciones",
-               "Total",
-               "Estado"
-       };
-	   
-	   // tabla no editable
-       modeloTabla = new DefaultTableModel(columnas, 0) {
-           @Override
-           public boolean isCellEditable(int row, int column) {
-               return false;
-           }
-       };
-       
-       
-       tablaVentas = new JTable(modeloTabla);
-	   
-       panelSuperior = new JPanel();
-       panelBotones = new JPanel();
-       panelFiltros = new JPanel();
-       panelInferior = new JPanel();
-	   
-   }
-   private void configurarPanel(){
-	   setLayout(new BorderLayout(10, 10));
-       setBackground(Color.WHITE);
-       setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-       etiquetaTitulo.setFont(new Font("Arial", Font.BOLD, 22));
+    public PanelVenta() {
+        super();
+        inicializarComponentesVenta();
+        configurarPanelVenta();
+        agregarComponentesVenta();
+    }
 
-       panelSuperior.setLayout(new BorderLayout());
-       panelSuperior.setBackground(Color.WHITE);
+    @Override
+    protected String obtenerTituloPanel() {
+        return TITULO_PANEL;
+    }
 
-       panelBotones.setLayout(new FlowLayout(FlowLayout.LEFT));
-       panelBotones.setBackground(Color.WHITE);
+    @Override
+    protected String obtenerTextoTotalInicial() {
+        return TEXTO_TOTAL_INICIAL;
+    }
 
-       panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
-       panelFiltros.setBackground(Color.WHITE);
+    @Override
+    protected Object[] obtenerColumnas() {
+        return COLUMNAS;
+    }
 
-       panelInferior.setLayout(new FlowLayout(FlowLayout.LEFT));
-       panelInferior.setBackground(Color.WHITE);
+    private void inicializarComponentesVenta() {
+        botonNuevaVenta = new JButton("Nueva Venta");
+        botonAnularVenta = new JButton("Anular");
+        botonVerDetalle = new JButton("Ver Detalle");
+        botonFactura = new JButton("Factura");
 
-       tablaVentas.setRowHeight(25);
-       tablaVentas.getTableHeader().setReorderingAllowed(false);
-       tablaVentas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	   
-       botonNuevaVenta.setBackground(Color.WHITE);
-       botonAnularVenta.setBackground(Color.WHITE);
-       botonVerDetalle.setBackground(Color.WHITE);
-       botonFactura.setBackground(Color.WHITE);
-      
-   }
-   
-   private void agregarComponentes(){
-	   
-	   
-	   panelBotones.add(botonNuevaVenta);
-	   panelBotones.add(botonAnularVenta);
-	   panelBotones.add(botonVerDetalle);
-	   panelBotones.add(botonFactura);
-	   
-	   panelFiltros.add(new JLabel("Buscar Factura:"));
-       panelFiltros.add(campoBuscar);
-       
-       panelFiltros.add(new JLabel("Cliente"));
-       panelFiltros.add(comboCliente);
-       
-       panelFiltros.add(new JLabel("Pago"));
-       panelFiltros.add(comboPago);
-       
-       JPanel panelCabecera = new JPanel(new BorderLayout());
-       panelCabecera.setBackground(Color.WHITE);
-       
-       panelCabecera.add(etiquetaTitulo, BorderLayout.NORTH);
-       panelCabecera.add(panelBotones, BorderLayout.CENTER);
-       panelCabecera.add(panelFiltros, BorderLayout.SOUTH);
+        campoBuscar = new JTextField(20);
 
+        comboCliente = new JComboBox<>();
+        comboCliente.addItem(OPCION_TODOS);
+        comboCliente.addItem("Cliente 1");
+        comboCliente.addItem("Cliente 2");
 
-	   
-       panelSuperior.add(panelCabecera, BorderLayout.CENTER);
+        comboPago = new JComboBox<>();
+        comboPago.addItem(OPCION_TODOS);
+        comboPago.addItem("Efectivo");
+        comboPago.addItem("Tarjeta");
+        comboPago.addItem("Transferencia");
+    }
 
-       JScrollPane scroll = new JScrollPane(tablaVentas);
+    private void configurarPanelVenta() {
+        botonNuevaVenta.setBackground(Color.WHITE);
+        botonAnularVenta.setBackground(Color.WHITE);
+        botonVerDetalle.setBackground(Color.WHITE);
+        botonFactura.setBackground(Color.WHITE);
+    }
 
-       panelInferior.add(etiquetaTotalVentas);
+    private void agregarComponentesVenta() {
+        panelBotones.add(botonNuevaVenta);
+        panelBotones.add(botonAnularVenta);
+        panelBotones.add(botonVerDetalle);
+        panelBotones.add(botonFactura);
 
-       add(panelSuperior, BorderLayout.NORTH);
-       add(scroll, BorderLayout.CENTER);
-       add(panelInferior, BorderLayout.SOUTH);
-   }
-	   
+        panelFiltros.add(new JLabel("Buscar Factura:"));
+        panelFiltros.add(campoBuscar);
 
-   
+        panelFiltros.add(new JLabel("Cliente:"));
+        panelFiltros.add(comboCliente);
+
+        panelFiltros.add(new JLabel("Pago:"));
+        panelFiltros.add(comboPago);
+    }
+
+    public void inicializarEventos(Evento evento) {
+        // por hacer
+    }
+
+    public void actualizarTotalVentas(int total) {
+        actualizarTextoTotal(TEXTO_TOTAL, total);
+    }
 }

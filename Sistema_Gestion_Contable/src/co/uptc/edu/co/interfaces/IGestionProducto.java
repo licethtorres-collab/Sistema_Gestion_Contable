@@ -22,4 +22,8 @@ public interface IGestionProducto {
     void actualizarPrecioProducto(String codigo, Double nuevoPrecioCompra, Double nuevoPrecioVenta) throws Exception;
 
     void registrarMovimientoInventario(String codigo, String tipoMovimiento, int cantidad) throws Exception;
+    
+  
+    
+    
 }

@@ -1,9 +1,10 @@
 package co.uptc.edu.co.gui;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import co.uptc.edu.co.modelo.Cliente;
+import co.uptc.edu.co.modelo.enums.EstadoEnum;
+import co.uptc.edu.co.modelo.enums.TipoClienteEnum;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -11,140 +12,103 @@ import javax.swing.event.DocumentListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PanelCliente extends JPanel {
+public class PanelCliente extends PanelCentral {
 
-    private JLabel etiquetaTitulo;
-    private JLabel etiquetaTotal;
-    
+    private static final String TITULO_PANEL = "Gestión de Clientes";
+    private static final String TEXTO_TOTAL_INICIAL = "Total de clientes: 0";
+    private static final String TEXTO_TOTAL = "Total de clientes: ";
+
+    private static final String TEXTO_BOTON_CAMBIAR_ESTADO = "Cambiar Estado";
+    private static final String TEXTO_BOTON_INACTIVAR = "Inactivar";
+    private static final String TEXTO_BOTON_ACTIVAR = "Activar";
+
+    private static final String OPCION_TODOS = "Todos";
+
+    private static final Object[] COLUMNAS = {
+            "Código",
+            "Nombre/Razón Social",
+            "Tipo ID",
+            "N° Identificación",
+            "Dirección",
+            "Teléfono",
+            "Tipo Cliente",
+            "Estado"
+    };
+
+    private static final int COLUMNA_CODIGO = 0;
+    private static final int COLUMNA_ESTADO = 7;
 
     private JButton botonNuevo;
     private JButton botonEditar;
-    private JButton botonInactivar;
+    private JButton botonCambiarEstado;
     private JButton botonHistorial;
 
     private JTextField campoBuscar;
     private JComboBox<String> comboTipo;
 
-    private JTable tablaClientes;
-    private DefaultTableModel modeloTabla;
-
-    private JPanel panelSuperior;
-    private JPanel panelBotones;
-    private JPanel panelFiltros;
-    private JPanel panelInferior;
-
     private List<Cliente> clientesCargados;
 
     public PanelCliente() {
+        super();
         clientesCargados = new ArrayList<>();
-        inicializarComponentes();
-        configurarPanel();
-        agregarComponentes();
+        inicializarComponentesCliente();
+        configurarPanelCliente();
+        agregarComponentesCliente();
         inicializarFiltros();
     }
 
-    private void inicializarComponentes() {
+    @Override
+    protected String obtenerTituloPanel() {
+        return TITULO_PANEL;
+    }
 
-        etiquetaTitulo = new JLabel("Gestión de Clientes");
-        etiquetaTotal = new JLabel("Total de clientes: 0");
+    @Override
+    protected String obtenerTextoTotalInicial() {
+        return TEXTO_TOTAL_INICIAL;
+    }
 
+    @Override
+    protected Object[] obtenerColumnas() {
+        return COLUMNAS;
+    }
+
+    private void inicializarComponentesCliente() {
         botonNuevo = new JButton("Nuevo");
         botonEditar = new JButton("Editar");
-        botonInactivar = new JButton("Inactivar");
+        botonCambiarEstado = new JButton(TEXTO_BOTON_CAMBIAR_ESTADO);
         botonHistorial = new JButton("Ver Historial");
 
         campoBuscar = new JTextField(20);
 
         comboTipo = new JComboBox<>();
-        comboTipo.addItem("Todos");
-        comboTipo.addItem("Mayorista");
-        comboTipo.addItem("Minorista");
+        comboTipo.addItem(OPCION_TODOS);
+        comboTipo.addItem(TipoClienteEnum.MAYORISTA.toString());
+        comboTipo.addItem(TipoClienteEnum.MINORISTA.toString());
+    }
 
-        String[] columnas = {
-                "Código",
-                "Nombre/Razón Social",
-                "Tipo ID",
-                "N° Identificación",
-                "Dirección",
-                "Teléfono",
-                "Tipo Cliente",
-                "Estado"
-        };
-
-        modeloTabla = new DefaultTableModel(columnas, 0) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+    private void configurarPanelCliente() {
+        tabla.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                actualizarTextoBotonSegunSeleccion();
             }
-        };
+        });
 
-        tablaClientes = new JTable(modeloTabla);
-
-        panelSuperior = new JPanel();
-        panelBotones = new JPanel();
-        panelFiltros = new JPanel();
-        panelInferior = new JPanel();
+        botonNuevo.setBackground(Color.WHITE);
+        botonEditar.setBackground(Color.WHITE);
+        botonCambiarEstado.setBackground(Color.WHITE);
+        botonHistorial.setBackground(Color.WHITE);
     }
 
-    private void configurarPanel() {
-
-        setLayout(new BorderLayout(10, 10));
-        setBackground(Color.WHITE);
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        etiquetaTitulo.setFont(new Font("Arial", Font.BOLD, 22));
-
-        panelSuperior.setLayout(new BorderLayout());
-        panelSuperior.setBackground(Color.WHITE);
-
-        panelBotones.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelBotones.setBackground(Color.WHITE);
-
-        panelFiltros.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelFiltros.setBackground(Color.WHITE);
-
-        panelInferior.setLayout(new FlowLayout(FlowLayout.LEFT));
-        panelInferior.setBackground(Color.WHITE);
-
-        tablaClientes.setRowHeight(20);
-        tablaClientes.getTableHeader().setReorderingAllowed(false);
-        tablaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    }
-
-    private void agregarComponentes() {
-
+    private void agregarComponentesCliente() {
         panelBotones.add(botonNuevo);
         panelBotones.add(botonEditar);
-        panelBotones.add(botonInactivar);
+        panelBotones.add(botonCambiarEstado);
         panelBotones.add(botonHistorial);
 
         panelFiltros.add(new JLabel("Buscar:"));
         panelFiltros.add(campoBuscar);
         panelFiltros.add(new JLabel("Tipo:"));
         panelFiltros.add(comboTipo);
-
-        JPanel panelCabecera = new JPanel();
-        panelCabecera.setLayout(new BorderLayout());
-        panelCabecera.setBackground(Color.WHITE);
-
-        panelCabecera.add(etiquetaTitulo, BorderLayout.NORTH);
-        panelCabecera.add(panelBotones, BorderLayout.CENTER);
-        panelCabecera.add(panelFiltros, BorderLayout.SOUTH);
-
-        botonNuevo.setBackground(Color.WHITE);
-        botonEditar.setBackground(Color.WHITE);
-        botonInactivar.setBackground(Color.WHITE);
-        botonHistorial.setBackground(Color.WHITE);
-
-        panelSuperior.add(panelCabecera, BorderLayout.CENTER);
-
-        JScrollPane scrollTablaClientes = new JScrollPane(tablaClientes);
-
-        panelInferior.add(etiquetaTotal);
-
-        add(panelSuperior, BorderLayout.NORTH);
-        add(scrollTablaClientes, BorderLayout.CENTER);
-        add(panelInferior, BorderLayout.SOUTH);
     }
 
     public void inicializarEventos(Evento evento) {
@@ -154,8 +118,8 @@ public class PanelCliente extends JPanel {
         botonEditar.setActionCommand(Evento.CMD_EDITAR_CLIENTE);
         botonEditar.addActionListener(evento);
 
-        botonInactivar.setActionCommand(Evento.CMD_ESTADO_CLIENTE);
-        botonInactivar.addActionListener(evento);
+        botonCambiarEstado.setActionCommand(Evento.CMD_ESTADO_CLIENTE);
+        botonCambiarEstado.addActionListener(evento);
 
         botonHistorial.setActionCommand(Evento.CMD_HISTORIAL_CLIENTE);
         botonHistorial.addActionListener(evento);
@@ -164,10 +128,7 @@ public class PanelCliente extends JPanel {
     public void cargarClientes(List<Cliente> clientes) {
         clientesCargados = new ArrayList<>(clientes);
         aplicarFiltros();
-    }
-
-    public void limpiarTabla() {
-        modeloTabla.setRowCount(0);
+        restablecerTextoBotonEstado();
     }
 
     private void aplicarFiltros() {
@@ -185,19 +146,19 @@ public class PanelCliente extends JPanel {
                     cliente.getNumeroIdentificacion().toLowerCase().contains(textoBusqueda);
 
             boolean coincideTipo =
-                    tipoSeleccionado.equals("Todos") ||
-                    cliente.getTipoCliente().equalsIgnoreCase(tipoSeleccionado);
+                    tipoSeleccionado.equals(OPCION_TODOS) ||
+                    cliente.getTipoCliente().name().equalsIgnoreCase(tipoSeleccionado);
 
             if (coincideBusqueda && coincideTipo) {
                 Object[] fila = {
                         cliente.getCodigo(),
                         cliente.getNombre(),
-                        cliente.getTipoIdentificacion(),
+                        cliente.getTipoIdentificacion().name(),
                         cliente.getNumeroIdentificacion(),
                         cliente.getDireccion(),
                         cliente.getTelefono(),
-                        cliente.getTipoCliente(),
-                        cliente.getEstado()
+                        cliente.getTipoCliente().name(),
+                        cliente.getEstado().name()
                 };
 
                 modeloTabla.addRow(fila);
@@ -205,7 +166,7 @@ public class PanelCliente extends JPanel {
             }
         }
 
-        etiquetaTotal.setText("Total de clientes: " + totalFiltrados);
+        actualizarTextoTotal(TEXTO_TOTAL, totalFiltrados);
     }
 
     private void inicializarFiltros() {
@@ -229,17 +190,35 @@ public class PanelCliente extends JPanel {
         comboTipo.addActionListener(e -> aplicarFiltros());
     }
 
-    public boolean haySeleccion() {
-        return tablaClientes.getSelectedRow() != -1;
+    private void actualizarTextoBotonSegunSeleccion() {
+        String estado = obtenerEstadoSeleccionado();
+        actualizarTextoBotonEstado(estado);
+    }
+
+    public String obtenerEstadoSeleccionado() {
+        Object valor = obtenerValorSeleccionado(COLUMNA_ESTADO);
+        return valor == null ? null : valor.toString();
+    }
+
+    public void actualizarTextoBotonEstado(String estado) {
+        if (estado == null) {
+            botonCambiarEstado.setText(TEXTO_BOTON_CAMBIAR_ESTADO);
+            return;
+        }
+
+        if (estado.equalsIgnoreCase(EstadoEnum.ACTIVO.name())) {
+            botonCambiarEstado.setText(TEXTO_BOTON_INACTIVAR);
+        } else {
+            botonCambiarEstado.setText(TEXTO_BOTON_ACTIVAR);
+        }
+    }
+
+    public void restablecerTextoBotonEstado() {
+        botonCambiarEstado.setText(TEXTO_BOTON_CAMBIAR_ESTADO);
     }
 
     public String obtenerCodigoSeleccionado() {
-        int filaSeleccionada = tablaClientes.getSelectedRow();
-
-        if (filaSeleccionada == -1) {
-            return null;
-        }
-
-        return modeloTabla.getValueAt(filaSeleccionada, 0).toString();
+        Object valor = obtenerValorSeleccionado(COLUMNA_CODIGO);
+        return valor == null ? null : valor.toString();
     }
 }

@@ -1,5 +1,7 @@
 package co.uptc.edu.co.negocio;
 
-public class GestionProveedor {
+import co.uptc.edu.co.interfaces.IGestionProveedor;
+
+public class GestionProveedor implements IGestionProveedor {
 
 }

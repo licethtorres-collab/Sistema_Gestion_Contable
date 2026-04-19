@@ -11,6 +11,8 @@ import javax.swing.JTextField;
 
 import co.uptc.edu.co.gui.Evento;
 import co.uptc.edu.co.modelo.Producto;
+import co.uptc.edu.co.modelo.enums.CategoriaProductoEnum;
+import co.uptc.edu.co.modelo.enums.EstadoEnum;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -23,7 +25,7 @@ public class DialogProducto extends JDialog {
 
     private JTextField campoCodigo;
     private JTextField campoNombre;
-    private JComboBox<String> comboCategoria;
+    private JComboBox<CategoriaProductoEnum> comboCategoria;
     private JTextField campoPrecioVenta;
     private JTextField campoPrecioCompra;
     private JTextField campoStockActual;
@@ -33,12 +35,15 @@ public class DialogProducto extends JDialog {
     private JButton botonGuardar;
     private JButton botonCancelar;
 
+    private boolean modoEdicion;
+
     public DialogProducto(Frame propietario) {
         this(propietario, null);
     }
 
     public DialogProducto(Frame propietario, Evento evento) {
         super(propietario, "Registrar Producto", true);
+        modoEdicion = false;
         inicializarComponentes();
         configurarDialogo();
         agregarComponentes();
@@ -49,11 +54,7 @@ public class DialogProducto extends JDialog {
         campoCodigo = new JTextField(25);
         campoNombre = new JTextField(25);
 
-        comboCategoria = new JComboBox<>();
-        comboCategoria.addItem("Aseo");
-        comboCategoria.addItem("Alimentos");
-        comboCategoria.addItem("Bebidas");
-        comboCategoria.addItem("Papelería");
+        comboCategoria = new JComboBox<>(CategoriaProductoEnum.values());
 
         campoPrecioVenta = new JTextField(25);
         campoPrecioCompra = new JTextField(25);
@@ -71,7 +72,7 @@ public class DialogProducto extends JDialog {
     }
 
     private void configurarDialogo() {
-        setSize(420, 560);
+        setSize(420, 590);
         setLocationRelativeTo(getOwner());
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -80,7 +81,7 @@ public class DialogProducto extends JDialog {
     private void agregarComponentes() {
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new GridBagLayout());
-        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        panelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 15, 25, 15));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -90,7 +91,7 @@ public class DialogProducto extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(8, 0, 4, 0);
 
-        panelPrincipal.add(new JLabel("Codigo:"), gbc);
+        panelPrincipal.add(new JLabel("Código:"), gbc);
 
         gbc.gridy++;
         panelPrincipal.add(campoCodigo, gbc);
@@ -102,13 +103,13 @@ public class DialogProducto extends JDialog {
         panelPrincipal.add(campoNombre, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Categoria:"), gbc);
+        panelPrincipal.add(new JLabel("Categoría:"), gbc);
 
         gbc.gridy++;
         panelPrincipal.add(comboCategoria, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Precio de Venta:"), gbc);
+        panelPrincipal.add(new JLabel("Precio de venta:"), gbc);
 
         gbc.gridy++;
         panelPrincipal.add(campoPrecioVenta, gbc);
@@ -126,13 +127,13 @@ public class DialogProducto extends JDialog {
         panelPrincipal.add(campoStockActual, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Stock minimo:"), gbc);
+        panelPrincipal.add(new JLabel("Stock mínimo:"), gbc);
 
         gbc.gridy++;
         panelPrincipal.add(campoStockMinimo, gbc);
 
         gbc.gridy++;
-        panelPrincipal.add(new JLabel("Stock maximo:"), gbc);
+        panelPrincipal.add(new JLabel("Stock máximo:"), gbc);
 
         gbc.gridy++;
         panelPrincipal.add(campoStockMaximo, gbc);
@@ -144,7 +145,7 @@ public class DialogProducto extends JDialog {
         gbc.gridy++;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(20, 0, 0, 0);
+        gbc.insets = new Insets(22, 0, 10, 0);
         panelPrincipal.add(panelBotones, gbc);
 
         add(panelPrincipal);
@@ -179,10 +180,19 @@ public class DialogProducto extends JDialog {
         }
     }
 
+    public void configurarModoEdicion() {
+        modoEdicion = true;
+        setTitle("Editar Producto");
+        botonGuardar.setText("Actualizar");
+        botonGuardar.setActionCommand(Evento.CMD_CONFIRMAR_EDICION_PRODUCTO);
+        campoCodigo.setEditable(false);
+    }
+
     public Producto obtenerProducto() throws Exception {
         String codigo = campoCodigo.getText().trim();
         String nombre = campoNombre.getText().trim();
-        String categoria = (String) comboCategoria.getSelectedItem();
+        CategoriaProductoEnum categoria = (CategoriaProductoEnum) comboCategoria.getSelectedItem();
+
         String textoPrecioVenta = campoPrecioVenta.getText().trim();
         String textoPrecioCompra = campoPrecioCompra.getText().trim();
         String textoStockActual = campoStockActual.getText().trim();
@@ -190,17 +200,22 @@ public class DialogProducto extends JDialog {
         String textoStockMaximo = campoStockMaximo.getText().trim();
 
         validarCamposObligatorios(
-                codigo, nombre, textoPrecioVenta, textoPrecioCompra,
-                textoStockActual, textoStockMinimo, textoStockMaximo
+                codigo,
+                nombre,
+                textoPrecioVenta,
+                textoPrecioCompra,
+                textoStockActual,
+                textoStockMinimo,
+                textoStockMaximo
         );
 
-        double precioVenta = convertirPrecioVenta(textoPrecioVenta);
-        double precioCompra = convertirPrecioCompra(textoPrecioCompra);
-        int stockActual = convertirStockActual(textoStockActual);
-        int stockMinimo = convertirStockMinimo(textoStockMinimo);
-        int stockMaximo = convertirStockMaximo(textoStockMaximo);
+        double precioVenta = convertirDouble(textoPrecioVenta, "El precio de venta debe ser numérico.");
+        double precioCompra = convertirDouble(textoPrecioCompra, "El precio de compra debe ser numérico.");
+        int stockActual = convertirEntero(textoStockActual, "El stock actual debe ser un número entero.");
+        int stockMinimo = convertirEntero(textoStockMinimo, "El stock mínimo debe ser un número entero.");
+        int stockMaximo = convertirEntero(textoStockMaximo, "El stock máximo debe ser un número entero.");
 
-        validarReglasNegocio(precioCompra, precioVenta, stockActual, stockMinimo, stockMaximo);
+        EstadoEnum estado = EstadoEnum.ACTIVO;
 
         return new Producto(
                 codigo,
@@ -211,7 +226,7 @@ public class DialogProducto extends JDialog {
                 stockActual,
                 stockMinimo,
                 stockMaximo,
-                "Activo"
+                estado
         );
     }
 
@@ -254,88 +269,19 @@ public class DialogProducto extends JDialog {
         }
     }
 
-    private double convertirPrecioVenta(String textoPrecioVenta) throws Exception {
+    private double convertirDouble(String texto, String mensajeError) throws Exception {
         try {
-            return Double.parseDouble(textoPrecioVenta);
+            return Double.parseDouble(texto);
         } catch (NumberFormatException e) {
-            throw new Exception("El precio de venta debe ser numérico.");
+            throw new Exception(mensajeError);
         }
     }
 
-    private double convertirPrecioCompra(String textoPrecioCompra) throws Exception {
+    private int convertirEntero(String texto, String mensajeError) throws Exception {
         try {
-            return Double.parseDouble(textoPrecioCompra);
+            return Integer.parseInt(texto);
         } catch (NumberFormatException e) {
-            throw new Exception("El precio de compra debe ser numérico.");
-        }
-    }
-
-    private int convertirStockActual(String textoStockActual) throws Exception {
-        try {
-            return Integer.parseInt(textoStockActual);
-        } catch (NumberFormatException e) {
-            throw new Exception("El stock actual debe ser un número entero.");
-        }
-    }
-
-    private int convertirStockMinimo(String textoStockMinimo) throws Exception {
-        try {
-            return Integer.parseInt(textoStockMinimo);
-        } catch (NumberFormatException e) {
-            throw new Exception("El stock mínimo debe ser un número entero.");
-        }
-    }
-
-    private int convertirStockMaximo(String textoStockMaximo) throws Exception {
-        try {
-            return Integer.parseInt(textoStockMaximo);
-        } catch (NumberFormatException e) {
-            throw new Exception("El stock máximo debe ser un número entero.");
-        }
-    }
-
-    private void validarReglasNegocio(
-            double precioCompra,
-            double precioVenta,
-            int stockActual,
-            int stockMinimo,
-            int stockMaximo
-    ) throws Exception {
-
-        if (precioCompra < 0) {
-            throw new Exception("El precio de compra no puede ser negativo.");
-        }
-
-        if (precioVenta < 0) {
-            throw new Exception("El precio de venta no puede ser negativo.");
-        }
-
-        if (precioVenta < precioCompra) {
-            throw new Exception("El precio de venta no puede ser menor al precio de compra.");
-        }
-
-        if (stockActual < 0) {
-            throw new Exception("El stock actual no puede ser negativo.");
-        }
-
-        if (stockMinimo < 0) {
-            throw new Exception("El stock mínimo no puede ser negativo.");
-        }
-
-        if (stockMaximo < 0) {
-            throw new Exception("El stock máximo no puede ser negativo.");
-        }
-
-        if (stockMinimo > stockActual) {
-            throw new Exception("El stock mínimo no puede ser mayor que el stock actual.");
-        }
-
-        if (stockActual > stockMaximo) {
-            throw new Exception("El stock actual no puede ser mayor que el stock máximo.");
-        }
-
-        if (stockMinimo > stockMaximo) {
-            throw new Exception("El stock mínimo no puede ser mayor que el stock máximo.");
+            throw new Exception(mensajeError);
         }
     }
 
@@ -348,13 +294,5 @@ public class DialogProducto extends JDialog {
         campoStockActual.setText(String.valueOf(producto.getStockActual()));
         campoStockMinimo.setText(String.valueOf(producto.getStockMinimo()));
         campoStockMaximo.setText(String.valueOf(producto.getStockMaximo()));
-    }
-
-    public JButton getBotonGuardar() {
-        return botonGuardar;
-    }
-
-    public JButton getBotonCancelar() {
-        return botonCancelar;
     }
 }

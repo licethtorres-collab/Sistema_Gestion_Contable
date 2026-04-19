@@ -3,19 +3,18 @@ package co.uptc.edu.co.negocio;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.uptc.edu.co.interfaces.IGestionCliente;
 import co.uptc.edu.co.modelo.Cliente;
+import co.uptc.edu.co.modelo.enums.EstadoEnum;
 
-public class GestionCliente {
-
-    public static final String ACTIVO = "Activo";
-    public static final String INACTIVO = "Inactivo";
+public class GestionCliente implements IGestionCliente {
 
     private List<Cliente> clientes;
 
     public GestionCliente() {
         clientes = new ArrayList<>();
     }
-    // validar codigo cliente
+
     public Cliente buscarClientePorCodigo(String codigo) {
         for (Cliente cliente : clientes) {
             if (cliente.getCodigo().equalsIgnoreCase(codigo)) {
@@ -24,27 +23,24 @@ public class GestionCliente {
         }
         return null;
     }
-    
+
     public List<Cliente> obtenerClientes() {
         return new ArrayList<>(clientes);
     }
-    
-    // registtrar cliente
+
     public void registrarCliente(Cliente cliente) throws Exception {
-        
         validarCliente(cliente);
 
         Cliente existente = buscarClientePorCodigo(cliente.getCodigo());
-        
+
         if (existente != null) {
             throw new Exception("Ya existe un cliente con ese código.");
         }
 
-        cliente.setEstado(ACTIVO);
+        cliente.setEstado(EstadoEnum.ACTIVO);
         clientes.add(cliente);
     }
-    
-    // validar cliente
+
     private void validarCliente(Cliente cliente) throws Exception {
         if (cliente == null) {
             throw new Exception("El cliente no puede ser nulo.");
@@ -58,7 +54,7 @@ public class GestionCliente {
             throw new Exception("El nombre es obligatorio.");
         }
 
-        if (cliente.getTipoIdentificacion() == null || cliente.getTipoIdentificacion().trim().isEmpty()) {
+        if (cliente.getTipoIdentificacion() == null) {
             throw new Exception("El tipo de identificación es obligatorio.");
         }
 
@@ -74,12 +70,11 @@ public class GestionCliente {
             throw new Exception("El teléfono es obligatorio.");
         }
 
-        if (cliente.getTipoCliente() == null || cliente.getTipoCliente().trim().isEmpty()) {
+        if (cliente.getTipoCliente() == null) {
             throw new Exception("El tipo de cliente es obligatorio.");
         }
     }
-    
-    // Actualizar Cliente
+
     public void actualizarCliente(Cliente clienteActualizado) throws Exception {
         validarCliente(clienteActualizado);
 
@@ -96,8 +91,7 @@ public class GestionCliente {
         clienteExistente.setTelefono(clienteActualizado.getTelefono());
         clienteExistente.setTipoCliente(clienteActualizado.getTipoCliente());
     }
-    
-    // Estado del cliente ACTIVO/INACTIVO.
+
     public void cambiarEstadoCliente(String codigo) throws Exception {
         Cliente cliente = buscarClientePorCodigo(codigo);
 
@@ -106,9 +100,9 @@ public class GestionCliente {
         }
 
         if (cliente.estaActivo()) {
-            cliente.setEstado(INACTIVO);
+            cliente.setEstado(EstadoEnum.INACTIVO);
         } else {
-            cliente.setEstado(ACTIVO);
+            cliente.setEstado(EstadoEnum.ACTIVO);
         }
     }
 }

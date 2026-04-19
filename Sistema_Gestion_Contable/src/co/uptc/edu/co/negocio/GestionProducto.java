@@ -7,11 +7,10 @@ import java.util.List;
 import co.uptc.edu.co.interfaces.IGestionProducto;
 import co.uptc.edu.co.modelo.MovimientoInventario;
 import co.uptc.edu.co.modelo.Producto;
+import co.uptc.edu.co.modelo.enums.EstadoEnum;
+import co.uptc.edu.co.modelo.enums.TipoMovimientoInventarioEnum;
 
 public class GestionProducto implements IGestionProducto {
-
-    public static final String ACTIVO = "Activo";
-    public static final String INACTIVO = "Inactivo";
 
     private List<Producto> productos;
     private List<MovimientoInventario> movimientos;
@@ -49,7 +48,7 @@ public class GestionProducto implements IGestionProducto {
             throw new Exception("Ya existe un producto con ese código.");
         }
 
-        producto.setEstado(ACTIVO);
+        producto.setEstado(EstadoEnum.ACTIVO);
         productos.add(producto);
     }
 
@@ -81,9 +80,9 @@ public class GestionProducto implements IGestionProducto {
         }
 
         if (producto.estaActivo()) {
-            producto.setEstado(INACTIVO);
+            producto.setEstado(EstadoEnum.INACTIVO);
         } else {
-            producto.setEstado(ACTIVO);
+            producto.setEstado(EstadoEnum.ACTIVO);
         }
     }
 
@@ -100,7 +99,7 @@ public class GestionProducto implements IGestionProducto {
             throw new Exception("El nombre del producto es obligatorio.");
         }
 
-        if (producto.getCategoria() == null || producto.getCategoria().trim().isEmpty()) {
+        if (producto.getCategoria() == null) {
             throw new Exception("La categoría es obligatoria.");
         }
 
@@ -134,6 +133,10 @@ public class GestionProducto implements IGestionProducto {
 
         if (producto.getStockMaximo() < 0) {
             throw new Exception("El stock máximo no puede ser negativo.");
+        }
+
+        if (producto.getStockMinimo() > producto.getStockActual()) {
+            throw new Exception("El stock mínimo no puede ser mayor que el stock actual.");
         }
 
         if (producto.getStockActual() > producto.getStockMaximo()) {
@@ -188,7 +191,14 @@ public class GestionProducto implements IGestionProducto {
             throw new Exception("La cantidad debe ser mayor que cero.");
         }
 
-        if (tipoMovimiento.equalsIgnoreCase("Entrada")) {
+        TipoMovimientoInventarioEnum movimientoEnum;
+        try {
+            movimientoEnum = TipoMovimientoInventarioEnum.valueOf(tipoMovimiento.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new Exception("Tipo de movimiento no válido.");
+        }
+
+        if (movimientoEnum == TipoMovimientoInventarioEnum.ENTRADA) {
             int nuevoStock = producto.getStockActual() + cantidad;
 
             if (nuevoStock > producto.getStockMaximo()) {
@@ -197,15 +207,12 @@ public class GestionProducto implements IGestionProducto {
 
             producto.setStockActual(nuevoStock);
 
-        } else if (tipoMovimiento.equalsIgnoreCase("Salida")) {
+        } else if (movimientoEnum == TipoMovimientoInventarioEnum.SALIDA) {
             if (cantidad > producto.getStockActual()) {
                 throw new Exception("No hay stock suficiente para realizar la salida.");
             }
 
             producto.setStockActual(producto.getStockActual() - cantidad);
-
-        } else {
-            throw new Exception("Tipo de movimiento no válido.");
         }
 
         String codigoMovimiento = "MOV" + (movimientos.size() + 1);
@@ -213,7 +220,7 @@ public class GestionProducto implements IGestionProducto {
         MovimientoInventario movimiento = new MovimientoInventario(
                 codigoMovimiento,
                 codigo,
-                tipoMovimiento,
+                movimientoEnum.name(),
                 cantidad,
                 LocalDate.now(),
                 "Movimiento registrado"
