@@ -1,7 +1,7 @@
 package co.uptc.edu.co.modelo;
 
 public class Proveedor {
-	//private String nombreProveedor ;
+	private String nombreProveedor ;
 	private String codigoProveedor;
 	private String razonSocial ;
 	private String NIT ;
@@ -9,9 +9,9 @@ public class Proveedor {
 	private String telefono ;
 	private String CorreoElectronico ;
 	
-	public Proveedor(/*String nombreProveedor*/ String codigoProveedor, String razonSocial, String nIT, String direccion,
+	public Proveedor(String nombreProveedor, String codigoProveedor, String razonSocial, String nIT, String direccion,
 			String telefono, String correoElectronico) {
-	//	this.nombreProveedor = nombreProveedor;
+		this.nombreProveedor = nombreProveedor;
 		this.codigoProveedor = codigoProveedor;
 		this.razonSocial = razonSocial;
 		NIT = nIT;
@@ -20,13 +20,13 @@ public class Proveedor {
 		CorreoElectronico = correoElectronico;
 	}
 
-	/*public String getNombreProveedor() {
+	public String getNombreProveedor() {
 		return nombreProveedor;
 	}
 
 	public void setNombreProveedor(String nombreProveedor) {
 		this.nombreProveedor = nombreProveedor;
-	}*/
+	}
 
 	public String getCodigoProveedor() {
 		return codigoProveedor;
@@ -78,7 +78,7 @@ public class Proveedor {
 
 	@Override
 	public String toString() {
-		return /*"Proveedor [nombreProveedor=" + nombreProveedor +*/ ", codigoProveedor=" + codigoProveedor + "]";
+		return "Proveedor [nombreProveedor=" + nombreProveedor + ", codigoProveedor=" + codigoProveedor + "]";
 	}
 
 
