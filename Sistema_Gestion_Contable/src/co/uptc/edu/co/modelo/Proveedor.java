@@ -7,7 +7,7 @@ public class Proveedor {
 	private String NIT ;
 	private String direccion ;
 	private String telefono ;
-	private String CorreoElectronico ;
+	private String correoElectronico ;
 	
 	public Proveedor(String nombreProveedor, String codigoProveedor, String razonSocial, String nIT, String direccion,
 			String telefono, String correoElectronico) {
@@ -17,7 +17,7 @@ public class Proveedor {
 		NIT = nIT;
 		this.direccion = direccion;
 		this.telefono = telefono;
-		CorreoElectronico = correoElectronico;
+		this.correoElectronico = correoElectronico;
 	}
 
 	public String getNombreProveedor() {
@@ -69,11 +69,11 @@ public class Proveedor {
 	}
 
 	public String getCorreoElectronico() {
-		return CorreoElectronico;
+		return correoElectronico;
 	}
 
 	public void setCorreoElectronico(String correoElectronico) {
-		CorreoElectronico = correoElectronico;
+		this.correoElectronico = correoElectronico;
 	}
 
 	@Override

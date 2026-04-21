@@ -2,11 +2,13 @@ package co.uptc.edu.co.modelo;
 
 import java.time.LocalDate;
 
+import co.uptc.edu.co.modelo.enums.TipoMovimientoInventarioEnum;
+
 public class MovimientoInventario {
 
-    private String codigoMovimiento;
+   
     private String codigoProducto;
-    private String tipoMovimiento;
+    private TipoMovimientoInventarioEnum tipoMovimientoInventarioEnum;
     private int cantidad;
     private LocalDate fechaMovimiento;
     private String descripcion;
@@ -14,24 +16,18 @@ public class MovimientoInventario {
     public MovimientoInventario() {
     }
 
-    public MovimientoInventario(String codigoMovimiento, String codigoProducto,
-            String tipoMovimiento, int cantidad,
+    public MovimientoInventario( String codigoProducto,
+            TipoMovimientoInventarioEnum tipoMovimiento, int cantidad,
             LocalDate fechaMovimiento, String descripcion) {
-        this.codigoMovimiento = codigoMovimiento;
+       
         this.codigoProducto = codigoProducto;
-        this.tipoMovimiento = tipoMovimiento;
+        this.tipoMovimientoInventarioEnum = tipoMovimiento;
         this.cantidad = cantidad;
         this.fechaMovimiento = fechaMovimiento;
         this.descripcion = descripcion;
     }
 
-    public String getCodigoMovimiento() {
-        return codigoMovimiento;
-    }
-
-    public void setCodigoMovimiento(String codigoMovimiento) {
-        this.codigoMovimiento = codigoMovimiento;
-    }
+   
 
     public String getCodigoProducto() {
         return codigoProducto;
@@ -41,12 +37,12 @@ public class MovimientoInventario {
         this.codigoProducto = codigoProducto;
     }
 
-    public String getTipoMovimiento() {
-        return tipoMovimiento;
+    public TipoMovimientoInventarioEnum getTipoMovimiento() {
+        return tipoMovimientoInventarioEnum;
     }
 
-    public void setTipoMovimiento(String tipoMovimiento) {
-        this.tipoMovimiento = tipoMovimiento;
+    public void setTipoMovimiento(TipoMovimientoInventarioEnum tipoMovimiento) {
+        this.tipoMovimientoInventarioEnum = tipoMovimiento;
     }
 
     public int getCantidad() {

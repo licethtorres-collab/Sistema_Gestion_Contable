@@ -215,7 +215,7 @@ public class GestionProducto implements IGestionProducto {
             producto.setStockActual(producto.getStockActual() - cantidad);
         }
 
-        String codigoMovimiento = "MOV" + (movimientos.size() + 1);
+      /*  String codigoMovimiento = "MOV" + (movimientos.size() + 1);
 
         MovimientoInventario movimiento = new MovimientoInventario(
                 codigoMovimiento,
@@ -226,6 +226,15 @@ public class GestionProducto implements IGestionProducto {
                 "Movimiento registrado"
         );
 
-        movimientos.add(movimiento);
+        movimientos.add(movimiento);*/
+        MovimientoInventario movimiento = new MovimientoInventario(
+                codigo,
+                movimientoEnum,
+                cantidad,
+                LocalDate.now(),
+                "Movimiento registrado"
+            );
+
+            movimientos.add(movimiento);
     }
 }

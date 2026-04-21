@@ -10,7 +10,7 @@ public class FacturaCompra {
 	private String codigoProveedor;
 	private String producto;
 	private int cantidad;
-	private Double costoUnitarion;
+	private Double costoUnitario;
 	private Double impuestos;
 	private Double totalCompra;
 	private EstadoFacturaCompra estado;
@@ -26,7 +26,7 @@ public class FacturaCompra {
 		this.codigoProveedor = codigoProveedor;
 		this.producto = producto;
 		this.cantidad = cantidad;
-		this.costoUnitarion = costoUnitarion;
+		this.costoUnitario = costoUnitarion;
 		this.impuestos = impuestos;
 		this.totalCompra = totalCompra;
 		this.estado = estado;
@@ -73,11 +73,11 @@ public class FacturaCompra {
 	}
 
 	public Double getCostoUnitarion() {
-		return costoUnitarion;
+		return costoUnitario;
 	}
 
 	public void setCostoUnitarion(Double costoUnitarion) {
-		this.costoUnitarion = costoUnitarion;
+		this.costoUnitario = costoUnitarion;
 	}
 
 	public Double getImpuestos() {
